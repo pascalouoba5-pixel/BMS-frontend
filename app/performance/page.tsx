@@ -1,13 +1,64 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { performanceAPI } from '../../services/api';
-import { 
-  PerformanceOverview, 
-  PerformancePoles, 
-  PerformancePolesDetailed,
-  PerformanceCommerciaux
-} from '../../services/api';
+// Types pour les performances
+interface PerformanceOverview {
+  totalRevenue: number;
+  totalOrders: number;
+  averageOrderValue: number;
+  growthRate: number;
+}
+
+interface PerformancePoles {
+  id: string;
+  name: string;
+  revenue: number;
+  orders: number;
+  growth: number;
+}
+
+interface PerformanceCommerciaux {
+  id: string;
+  name: string;
+  revenue: number;
+  orders: number;
+  conversionRate: number;
+}
+
+// API simulée pour les performances
+const performanceAPI = {
+  async getOverview(startDate: string, endDate: string) {
+    // Simulation d'appel API
+    return {
+      data: {
+        totalRevenue: 125000,
+        totalOrders: 450,
+        averageOrderValue: 278,
+        growthRate: 15.5
+      }
+    };
+  },
+  
+  async getPoles(startDate: string, endDate: string) {
+    return {
+      data: [
+        { id: '1', name: 'Pôle Informatique', revenue: 45000, orders: 180, growth: 12.5 },
+        { id: '2', name: 'Pôle Commercial', revenue: 35000, orders: 120, growth: 18.2 },
+        { id: '3', name: 'Pôle Marketing', revenue: 45000, orders: 150, growth: 22.1 }
+      ]
+    };
+  },
+  
+  async getCommerciaux(startDate: string, endDate: string) {
+    return {
+      data: [
+        { id: '1', name: 'Jean Dupont', revenue: 25000, orders: 85, conversionRate: 68 },
+        { id: '2', name: 'Marie Martin', revenue: 22000, orders: 72, conversionRate: 71 },
+        { id: '3', name: 'Pierre Durand', revenue: 18000, orders: 65, conversionRate: 62 }
+      ]
+    };
+  }
+};
 import ProtectedRoute from '../../components/ProtectedRoute';
 import Layout from '../../components/Layout';
 import HomeButton from '../../components/HomeButton';
