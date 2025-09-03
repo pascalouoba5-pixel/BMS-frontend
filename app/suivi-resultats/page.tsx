@@ -11,7 +11,7 @@ import { offresAPI } from '@/services/api';
 
 // Interface étendue pour les offres avec les champs de suivi
 interface OffreSuivi {
-  id: string;
+  id: number;
   intituleOffre?: string;
   titre?: string;
   bailleur?: string;

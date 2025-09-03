@@ -12,7 +12,7 @@ import { useGlobalFilters } from '@/hooks/useGlobalFilters';
 import { offresAPI } from '@/services/api';
 
 interface Offre {
-  id: string;
+  id: number;
   intituleOffre?: string;
   titre?: string;
   bailleur?: string;
@@ -188,7 +188,7 @@ function PoleOffresClientContent({ poleName }: PoleOffresClientProps) {
     }
   };
 
-  const updateTDRCount = (offreId: string, count: number) => {
+  const updateTDRCount = (offreId: number, count: number) => {
     setTdrCounts(prev => ({
       ...prev,
       [offreId]: count

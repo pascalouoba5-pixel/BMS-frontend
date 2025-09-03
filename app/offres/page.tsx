@@ -34,7 +34,7 @@ function OffresContent() {
   const [offres, setOffres] = useState<Offre[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedOffres, setSelectedOffres] = useState<string[]>([]);
+  const [selectedOffres, setSelectedOffres] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
   const [sortBy, setSortBy] = useState('dateCreation');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
@@ -201,7 +201,7 @@ function OffresContent() {
     }
   };
 
-  const handleSelectOffre = (id: string) => {
+  const handleSelectOffre = (id: number) => {
     setSelectedOffres(prev => 
       prev.includes(id) 
         ? prev.filter(offreId => offreId !== id)

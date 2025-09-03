@@ -9,8 +9,8 @@ interface OffresTableProps {
   onEditOffre?: (offre: Offre) => void;
   onDeleteOffre?: (offre: Offre) => void;
   onDownloadTDR?: (offre: Offre) => void;
-  selectedOffres?: string[];
-  onSelectOffre?: (id: string) => void;
+  selectedOffres?: number[];
+  onSelectOffre?: (id: number) => void;
   onSelectAll?: () => void;
   viewMode?: 'table' | 'cards';
   loading?: boolean;

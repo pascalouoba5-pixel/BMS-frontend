@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface Offre {
-  id: string;
+  id: number;
   intituleOffre?: string;
   titre?: string;
   bailleur?: string;

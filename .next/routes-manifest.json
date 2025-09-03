@@ -1,0 +1,204 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:file((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+)/",
+      "destination": "/:file",
+      "internal": true,
+      "missing": [
+        {
+          "type": "header",
+          "key": "x-nextjs-data"
+        }
+      ],
+      "statusCode": 308,
+      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+))/$"
+    },
+    {
+      "source": "/:notfile((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+)",
+      "destination": "/:notfile/",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+))$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "dynamicRoutes": [
+    {
+      "page": "/repartition/pole-lead/[pole]",
+      "regex": "^/repartition/pole\\-lead/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpole": "nxtPpole"
+      },
+      "namedRegex": "^/repartition/pole\\-lead/(?<nxtPpole>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/acces-reserve",
+      "regex": "^/acces\\-reserve(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/acces\\-reserve(?:/)?$"
+    },
+    {
+      "page": "/ajouter-offre",
+      "regex": "^/ajouter\\-offre(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ajouter\\-offre(?:/)?$"
+    },
+    {
+      "page": "/gestion-comptes",
+      "regex": "^/gestion\\-comptes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/gestion\\-comptes(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/logout",
+      "regex": "^/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/logout(?:/)?$"
+    },
+    {
+      "page": "/montage-administratif",
+      "regex": "^/montage\\-administratif(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/montage\\-administratif(?:/)?$"
+    },
+    {
+      "page": "/offre-du-jour",
+      "regex": "^/offre\\-du\\-jour(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/offre\\-du\\-jour(?:/)?$"
+    },
+    {
+      "page": "/offres",
+      "regex": "^/offres(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/offres(?:/)?$"
+    },
+    {
+      "page": "/offres-validees",
+      "regex": "^/offres\\-validees(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/offres\\-validees(?:/)?$"
+    },
+    {
+      "page": "/partenariat",
+      "regex": "^/partenariat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/partenariat(?:/)?$"
+    },
+    {
+      "page": "/performance",
+      "regex": "^/performance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/performance(?:/)?$"
+    },
+    {
+      "page": "/recherche-automatique",
+      "regex": "^/recherche\\-automatique(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/recherche\\-automatique(?:/)?$"
+    },
+    {
+      "page": "/repartition",
+      "regex": "^/repartition(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/repartition(?:/)?$"
+    },
+    {
+      "page": "/repartition/gestion-repartition",
+      "regex": "^/repartition/gestion\\-repartition(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/repartition/gestion\\-repartition(?:/)?$"
+    },
+    {
+      "page": "/repartition/pole-lead",
+      "regex": "^/repartition/pole\\-lead(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/repartition/pole\\-lead(?:/)?$"
+    },
+    {
+      "page": "/repartition/vue-repetitions",
+      "regex": "^/repartition/vue\\-repetitions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/repartition/vue\\-repetitions(?:/)?$"
+    },
+    {
+      "page": "/suivi-resultats",
+      "regex": "^/suivi\\-resultats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/suivi\\-resultats(?:/)?$"
+    },
+    {
+      "page": "/unauthorized",
+      "regex": "^/unauthorized(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/unauthorized(?:/)?$"
+    },
+    {
+      "page": "/valider-offre",
+      "regex": "^/valider\\-offre(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/valider\\-offre(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}

@@ -164,20 +164,20 @@ export const offresAPI = {
     });
   },
 
-  update: async (id: string, offreData: any) => {
+  update: async (id: number, offreData: any) => {
     return apiCall(`/api/offres/${id}`, {
       method: 'PUT',
       body: JSON.stringify(offreData),
     });
   },
 
-  delete: async (id: string) => {
+  delete: async (id: number) => {
     return apiCall(`/api/offres/${id}`, {
       method: 'DELETE',
     });
   },
 
-  validate: async (id: string, validationData: { action: 'approve' | 'reject'; commentaire?: string }) => {
+  validate: async (id: number, validationData: { action: 'approve' | 'reject'; commentaire?: string }) => {
     return apiCall(`/api/offres/${id}/validate`, {
       method: 'PATCH',
       body: JSON.stringify(validationData),
@@ -305,7 +305,7 @@ export default {
 
 // Export types for better TypeScript support
 export interface Offre {
-  id: string;
+  id: number;
   // Champs du formulaire d'ajout d'offre
   intituleOffre?: string;
   commentaire?: string;

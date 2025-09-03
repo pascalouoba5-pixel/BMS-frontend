@@ -14,7 +14,7 @@ interface FichierTDR {
 }
 
 interface TDRManagerProps {
-  offreId: string;
+  offreId: number;
   onFichiersUpdate?: () => void;
 }
 

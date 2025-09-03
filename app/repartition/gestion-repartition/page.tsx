@@ -9,7 +9,7 @@ import Layout from '../../../components/Layout';
 import OffreCard from '../../../components/OffreCard';
 
 interface Offre {
-  id: string;
+  id: number;
   intituleOffre?: string;
   titre?: string;
   bailleur?: string;
@@ -69,7 +69,7 @@ function GestionRepartitionContent() {
   const [filteredOffres, setFilteredOffres] = useState<Offre[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOffres, setSelectedOffres] = useState<string[]>([]);
+  const [selectedOffres, setSelectedOffres] = useState<number[]>([]);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [assignPoleLead, setAssignPoleLead] = useState<PoleType | ''>('');
   const [assignPoleAssocies, setAssignPoleAssocies] = useState<PoleType | ''>('');
@@ -200,7 +200,7 @@ function GestionRepartitionContent() {
     setFilteredOffres(filtered);
   };
 
-  const handleSelectOffre = (id: string) => {
+  const handleSelectOffre = (id: number) => {
     setSelectedOffres(prev => 
       prev.includes(id) 
         ? prev.filter(offreId => offreId !== id)
