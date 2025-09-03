@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
 
-  output: 'export',
+  output: 'standalone',
 
   publicRuntimeConfig: {
     apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com',
