@@ -9,7 +9,7 @@ export default function TestSections() {
           Test Section 1 - Veille et présélection
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Cette section teste l'affichage basique avec le système de thèmes.
+          Cette section teste l&apos;affichage basique avec le système de thèmes.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
@@ -33,7 +33,7 @@ export default function TestSections() {
           Test Section 2 - Gestion des répartitions
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Cette section teste l'affichage des répartitions.
+          Cette section teste l&apos;affichage des répartitions.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-lg">
@@ -53,7 +53,7 @@ export default function TestSections() {
           Test Section 3 - Suivi
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Cette section teste l'affichage du suivi.
+          Cette section teste l&apos;affichage du suivi.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-pink-100 dark:bg-pink-900 p-4 rounded-lg">
@@ -77,12 +77,12 @@ export default function TestSections() {
           Test Section 4 - Fonctionnalités avancées
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Cette section teste l'affichage des fonctionnalités avancées.
+          Cette section teste l&apos;affichage des fonctionnalités avancées.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-emerald-100 dark:bg-emerald-900 p-4 rounded-lg">
             <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">Recherche automatique</h3>
-            <p className="text-emerald-700 dark:text-emerald-300 text-sm">Recherche intelligente d'opportunités</p>
+            <p className="text-emerald-700 dark:text-emerald-300 text-sm">Recherche intelligente d&apos;opportunités</p>
           </div>
           <div className="bg-cyan-100 dark:bg-cyan-900 p-4 rounded-lg">
             <h3 className="font-semibold text-cyan-900 dark:text-cyan-100">Partenariat</h3>

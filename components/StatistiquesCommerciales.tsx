@@ -87,7 +87,7 @@ export default function StatistiquesCommerciales({ data, loading, period }: Stat
         <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-purple-600 dark:text-purple-300">Types d'Offres</p>
+              <p className="text-sm font-medium text-purple-600 dark:text-purple-300">Types d&apos;Offres</p>
               <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
                 {data.stats.totalOffres > 0 ? 'Multiples' : 'Aucun'}
               </p>

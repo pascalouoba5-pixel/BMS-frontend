@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 // import { dashboardAPI } from '../services/api';
-import { logger, logInfo, logError } from '../utils/logger';
+import { logInfo, logError } from '../utils/logger';
 
 interface PoleStats {
   pole: string;
@@ -41,11 +41,7 @@ export default function StatistiquesPoles({ period, startDate, endDate }: Statis
     'Pôle SIDIA'
   ];
 
-  useEffect(() => {
-    fetchPoleStats();
-  }, [period, startDate, endDate, fetchPoleStats]);
-
-  const fetchPoleStats = async () => {
+  const fetchPoleStats = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -56,31 +52,31 @@ export default function StatistiquesPoles({ period, startDate, endDate }: Statis
       // const response = await dashboardAPI.getAllDashboardData(period, startDate, endDate);
       
       // Utiliser des données statiques temporairement
-      const offres: any[] = [];
+      const offres: unknown[] = [];
       logInfo(`Données récupérées: ${offres.length} offres`, 'StatistiquesPoles');
         
         // Calculer les statistiques pour chaque pôle lead
         const stats = POLE_OPTIONS.map(pole => {
-          const offresPoleLead = offres.filter(offre => offre.poleLead === pole);
-          const offresPoleAssocie = offres.filter(offre => offre.poleAssocies === pole);
+          const offresPoleLead = offres.filter((offre: any) => offre.poleLead === pole);
+          const offresPoleAssocie = offres.filter((offre: any) => offre.poleAssocies === pole);
           
-                     const montagees = offresPoleLead.filter(offre => 
+                     const montagees = offresPoleLead.filter((offre: any) => 
              offre.modalite === 'montée' || offre.statutOffre === 'En cours' || offre.statut === 'en_attente'
            ).length;
            
-           const deposees = offresPoleLead.filter(offre => 
+           const deposees = offresPoleLead.filter((offre: any) => 
              offre.offreDeposee === true || offre.statutOffre === 'déposée' || offre.statut === 'approuvée'
            ).length;
            
-           const gagnees = offresPoleLead.filter(offre => 
+           const gagnees = offresPoleLead.filter((offre: any) => 
              offre.statutOffre === 'Gagnée' || offre.statut === 'approuvée'
            ).length;
            
-           const perdues = offresPoleLead.filter(offre => 
+           const perdues = offresPoleLead.filter((offre: any) => 
              offre.statutOffre === 'Perdue' || offre.statut === 'rejetée'
            ).length;
            
-           const enCours = offresPoleLead.filter(offre => 
+           const enCours = offresPoleLead.filter((offre: any) => 
              offre.statutOffre === 'En cours' || offre.statut === 'en_attente'
            ).length;
           
@@ -102,17 +98,22 @@ export default function StatistiquesPoles({ period, startDate, endDate }: Statis
             offresEnPoleAssocie
           };
         });
-        
+
         setPoleStats(stats);
-        logInfo('Statistiques des pôles calculées avec succès', 'StatistiquesPoles', stats);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
-      logError('Erreur lors de la récupération des statistiques des pôles', error as Error, 'StatistiquesPoles');
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+        logInfo(`Statistiques calculées pour ${stats.length} pôles`, 'StatistiquesPoles');
+        
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+        setError(errorMessage);
+        logError('Erreur lors de la récupération des statistiques des pôles', 'StatistiquesPoles', error);
+      } finally {
+        setLoading(false);
+      }
+    }, [period, startDate, endDate]);
+
+  useEffect(() => {
+    fetchPoleStats();
+  }, [fetchPoleStats]);
 
   const getStatusColor = (taux: number) => {
     if (taux >= 80) return 'text-green-600 dark:text-green-400';

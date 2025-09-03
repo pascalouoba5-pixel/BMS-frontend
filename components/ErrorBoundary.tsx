@@ -49,7 +49,7 @@ class ErrorBoundary extends Component<Props, State> {
             </h2>
             
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Désolé, quelque chose s'est mal passé. Veuillez rafraîchir la page ou contacter le support.
+              Désolé, quelque chose s&apos;est mal passé. Veuillez rafraîchir la page ou contacter le support.
             </p>
             
             <button
@@ -65,7 +65,7 @@ class ErrorBoundary extends Component<Props, State> {
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-                  Détails de l'erreur (développement)
+                  Détails de l&apos;erreur (développement)
                 </summary>
                 <pre className="mt-2 text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900 p-2 rounded overflow-auto">
                   {this.state.error.toString()}

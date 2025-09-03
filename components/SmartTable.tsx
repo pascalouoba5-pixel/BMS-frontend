@@ -5,7 +5,7 @@ import EmptyStateTable from './EmptyStateTable';
 interface Column<T> {
   key: keyof T | string;
   header: string;
-  render?: (value: any, item: T) => React.ReactNode;
+  render?: (value: unknown, item: T) => React.ReactNode;
   className?: string;
 }
 

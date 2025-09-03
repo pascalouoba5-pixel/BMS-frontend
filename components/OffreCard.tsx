@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { Offre } from '../services/api';
 
 // Utilise l'interface Offre de l'API
@@ -68,18 +67,6 @@ export default function OffreCard({
     }
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'critique': return 'bg-red-500';
-      case 'haute': return 'bg-orange-500';
-      case 'normale': return 'bg-blue-500';
-      case 'Stratégique': return 'bg-purple-500';
-      case 'Priorité haute': return 'bg-orange-500';
-      case 'Opportunité intermédiaire': return 'bg-blue-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
   const getModaliteColor = (modalite: string | undefined) => {
     switch (modalite) {
       case 'gagné': return 'bg-green-100 text-green-800';
@@ -99,13 +86,20 @@ export default function OffreCard({
     });
   };
 
-  const formatBudget = (budget: string | undefined) => {
-    return budget ? budget.replace('€', ' €') : 'Non spécifié';
+  const formatBudget = (budget: string | number | undefined) => {
+    if (!budget) return 'Non spécifié';
+    if (typeof budget === 'string') {
+      return budget.replace('€', ' €');
+    }
+    return `${budget} €`;
   };
 
-  const getPaysDisplay = (pays: string[] | undefined) => {
-    if (!pays || pays.length === 0) return 'Non spécifié';
-    return pays.join(', ');
+  const formatPays = (pays: string[] | string | undefined) => {
+    if (!pays) return 'Non spécifié';
+    if (Array.isArray(pays)) {
+      return pays.join(', ');
+    }
+    return pays;
   };
 
   return (
@@ -202,7 +196,7 @@ export default function OffreCard({
                 {offre.pays && offre.pays.length > 0 && (
                   <div>
                     <span className="text-sm font-medium text-gray-600">Pays: </span>
-                    <span className="text-sm text-gray-900">{getPaysDisplay(offre.pays)}</span>
+                    <span className="text-sm text-gray-900">{formatPays(offre.pays)}</span>
                   </div>
                 )}
                 {offre.autrePays && (

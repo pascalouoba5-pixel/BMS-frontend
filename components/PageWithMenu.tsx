@@ -18,7 +18,7 @@ export default function PageWithMenu({
   requiredRole,
   pageName 
 }: PageWithMenuProps) {
-  const { userRole, isAuthenticated } = useAuth();
+  const { userRole } = useAuth();
 
   // Vérifier si l'utilisateur peut accéder à cette page
   const canAccess = pageName ? canAccessPage(userRole || '', pageName) : true;
@@ -35,7 +35,7 @@ export default function PageWithMenu({
             Accès Refusé
           </h1>
           <p className="text-gray-600 mb-6">
-            Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+            Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
           </p>
           <div className="bg-gray-100 rounded-lg p-4 text-left">
             <p className="text-sm text-gray-700">

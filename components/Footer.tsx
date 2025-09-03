@@ -152,7 +152,7 @@ export default function Footer() {
              </ul>
             
             <div className="mt-6">
-              <h5 className="text-sm font-semibold text-blue-300 mb-3">Besoin d'aide ?</h5>
+              <h5 className="text-sm font-semibold text-blue-300 mb-3">Besoin d&apos;aide ?</h5>
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
                 💬 Assistant BMS
               </button>
@@ -173,7 +173,7 @@ export default function Footer() {
                 Politique de confidentialité
               </Link>
               <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                Conditions d'utilisation
+                Conditions d&apos;utilisation
               </Link>
               <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
                 Mentions légales

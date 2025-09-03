@@ -39,8 +39,7 @@ export default function OffresTable({
   showStatus = true,
   showPriority = true,
   showPoleLead = false,
-  showMontageAdministratif = false,
-  customColumns = []
+  showMontageAdministratif = false
 }: OffresTableProps) {
   const [sortBy, setSortBy] = useState<string>('dateDepot');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');

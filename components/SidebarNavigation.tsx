@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSidebar } from '../hooks/useSidebar';
-import { getRoleMenu, canAccessPage } from '../utils/permissions';
+import { getRoleMenu } from '../utils/permissions';
 import ThemeToggle from './ThemeToggle';
 
 interface NavItem {
@@ -18,7 +18,6 @@ export default function SidebarNavigation() {
   const pathname = usePathname();
   const { isOpen, isMobile, toggleSidebar, closeSidebar } = useSidebar();
   const [navItems, setNavItems] = useState<NavItem[]>([]);
-  const [userRole, setUserRole] = useState<string>('');
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -35,18 +34,10 @@ export default function SidebarNavigation() {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    // Vérifier l'authentification seulement côté client
-    if (isClient) {
-      checkAuth();
-    }
-  }, [isClient, checkAuth]);
-
-  const checkAuth = () => {
+  const checkAuth = useCallback(() => {
     // Récupérer le rôle utilisateur depuis localStorage
     const role = localStorage.getItem('userRole') || 
                  (localStorage.getItem('isSuperAdmin') === 'true' ? 's_admin' : '');
-    setUserRole(role);
 
     // Obtenir le menu selon le rôle
     if (role) {
@@ -74,7 +65,14 @@ export default function SidebarNavigation() {
         }
       ]);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Vérifier l'authentification seulement côté client
+    if (isClient) {
+      checkAuth();
+    }
+  }, [isClient, checkAuth]);
 
   const getDefaultDescription = (name: string): string => {
     const descriptions: { [key: string]: string } = {

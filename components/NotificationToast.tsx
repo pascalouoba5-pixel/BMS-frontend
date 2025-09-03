@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { formatUserErrorMessage } from '../config/apiErrorConfig';
+import React, { useState, useEffect, useCallback } from 'react';
 
 export interface Notification {
   id: string;
@@ -23,6 +22,13 @@ const NotificationToast: React.FC<NotificationToastProps> = ({ notification, onC
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(100);
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose(notification.id);
+    }, 300);
+  }, [onClose, notification.id]);
+
   useEffect(() => {
     if (notification.duration) {
       const startTime = Date.now();
@@ -44,13 +50,6 @@ const NotificationToast: React.FC<NotificationToastProps> = ({ notification, onC
       requestAnimationFrame(updateProgress);
     }
   }, [notification.duration, handleClose]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      onClose(notification.id);
-    }, 300);
-  };
 
   const getIcon = () => {
     switch (notification.type) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 interface FichierTDR {
@@ -28,11 +28,7 @@ export default function TDRManager({ offreId, onFichiersUpdate }: TDRManagerProp
   const [showUploadForm, setShowUploadForm] = useState(false);
   const { token } = useAuth();
 
-  useEffect(() => {
-    fetchFichiersTDR();
-  }, [offreId, fetchFichiersTDR]);
-
-  const fetchFichiersTDR = async () => {
+  const fetchFichiersTDR = useCallback(async () => {
     if (!token) return;
     
     setLoading(true);
@@ -44,8 +40,8 @@ export default function TDRManager({ offreId, onFichiersUpdate }: TDRManagerProp
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setFichiers(data.fichiers || []);
+        const responseData = await response.json();
+        setFichiers(responseData.fichiers || []);
       } else {
         console.error('Erreur lors de la récupération des fichiers TDR');
       }
@@ -54,7 +50,11 @@ export default function TDRManager({ offreId, onFichiersUpdate }: TDRManagerProp
     } finally {
       setLoading(false);
     }
-  };
+  }, [offreId, token]);
+
+  useEffect(() => {
+    fetchFichiersTDR();
+  }, [fetchFichiersTDR]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

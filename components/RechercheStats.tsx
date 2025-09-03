@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 // import { rechercheAutomatiqueService } from '../services/rechercheAutomatique';
 
 interface SearchStats {
@@ -18,11 +18,7 @@ export default function RechercheStats() {
   const [stats, setStats] = useState<SearchStats | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadStats();
-  }, [loadStats]);
-
-  const loadStats = async () => {
+  const loadStats = useCallback(async () => {
     try {
       // TODO: Implémenter le service de recherche automatique
       const searchStats = {
@@ -37,7 +33,11 @@ export default function RechercheStats() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   if (loading) {
     return (

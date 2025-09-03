@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Offre {
   id: number;
@@ -79,11 +78,7 @@ export default function PoleOffresTable({
 }: PoleOffresTableProps) {
   const [filteredOffres, setFilteredOffres] = useState<Offre[]>([]);
 
-  useEffect(() => {
-    filterOffres();
-  }, [offres, searchTerm, selectedModalite, filterOffres]);
-
-  const filterOffres = () => {
+  const filterOffres = useCallback(() => {
     let filtered = [...offres];
 
     // Filtre par recherche
@@ -103,7 +98,11 @@ export default function PoleOffresTable({
     }
 
     setFilteredOffres(filtered);
-  };
+  }, [offres, searchTerm, selectedModalite]);
+
+  useEffect(() => {
+    filterOffres();
+  }, [filterOffres]);
 
   const getPriorityColor = (priority: string | undefined) => {
     switch (priority) {

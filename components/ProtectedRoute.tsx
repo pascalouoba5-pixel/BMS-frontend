@@ -88,7 +88,7 @@ export default function ProtectedRoute({ children, requiredRole, pageName }: Pro
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Accès Refusé</h1>
             <p className="text-gray-600 mb-6">
-              Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+              Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
             </p>
             <div className="space-y-3">
               <button

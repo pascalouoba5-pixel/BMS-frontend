@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Offre {
   id: number;
@@ -46,28 +46,7 @@ export default function OffresStatsTables({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    calculateStats();
-    
-    // Écouter les changements dans localStorage
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'offres') {
-        calculateStats();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Vérifier les changements toutes les 30 secondes
-    const interval = setInterval(calculateStats, 30000);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
-    };
-  }, [selectedPeriod, selectedPoleLead, customStartDate, customEndDate, calculateStats]);
-
-  const calculateStats = () => {
+  const calculateStats = useCallback(() => {
     try {
       setError('');
       const offresData = localStorage.getItem('offres');
@@ -145,9 +124,9 @@ export default function OffresStatsTables({
         
         // Compter par type d'offre (gérer les variations possibles)
         const typeOffreNormalized = typeOffre.toLowerCase().trim();
-        if (typeOffreNormalized === 'ao' || typeOffreNormalized === 'appel d\'offres') {
+        if (typeOffreNormalized === 'ao' || typeOffreNormalized === 'appel d&apos;offres') {
           stats.AO++;
-        } else if (typeOffreNormalized === 'ami' || typeOffreNormalized === 'appel à manifestation d\'intérêt') {
+        } else if (typeOffreNormalized === 'ami' || typeOffreNormalized === 'appel à manifestation d&apos;intérêt') {
           stats.AMI++;
         } else if (typeOffreNormalized === 'avis général' || typeOffreNormalized === 'avis general') {
           stats['Avis Général']++;
@@ -184,7 +163,28 @@ export default function OffresStatsTables({
       setError('Erreur lors du calcul des statistiques');
       setLoading(false);
     }
-  };
+  }, [selectedPeriod, selectedPoleLead, customStartDate, customEndDate]);
+
+  useEffect(() => {
+    calculateStats();
+    
+    // Écouter les changements dans localStorage
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'offres') {
+        calculateStats();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Vérifier les changements toutes les 30 secondes
+    const interval = setInterval(calculateStats, 30000);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [calculateStats]);
 
   const getStatusColor = (statut: string) => {
     switch (statut) {

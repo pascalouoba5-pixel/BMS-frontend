@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { scheduledSearchesAPI } from '../services/api';
 
 interface CustomSchedule {
@@ -51,12 +51,11 @@ export default function ScheduledSearchConfig({
   const [frequencies, setFrequencies] = useState<FrequencyOption[]>([]);
   const [customizationOptions, setCustomizationOptions] = useState<CustomizationOptions | null>(null);
   const [localCustomSchedule, setLocalCustomSchedule] = useState<CustomSchedule>(customSchedule || {});
-  const [isLoading, setIsLoading] = useState(false);
 
   // Options de période
   const periodOptions: PeriodOption[] = [
     { value: 'all', label: 'Toutes les périodes', description: 'Recherche continue sans limite de temps' },
-    { value: 'today', label: 'Aujourd\'hui', description: 'Offres publiées aujourd\'hui uniquement' },
+    { value: 'today', label: 'Aujourd&apos;hui', description: 'Offres publiées aujourd&apos;hui uniquement' },
     { value: 'week', label: 'Cette semaine', description: 'Offres publiées cette semaine' },
     { value: 'month', label: 'Ce mois', description: 'Offres publiées ce mois' },
     { value: 'quarter', label: 'Ce trimestre', description: 'Offres publiées ce trimestre' },
@@ -64,11 +63,7 @@ export default function ScheduledSearchConfig({
     { value: 'custom', label: 'Période personnalisée', description: 'Définir une période spécifique' }
   ];
 
-  useEffect(() => {
-    loadOptions();
-  }, [loadOptions]);
-
-  const loadOptions = async () => {
+  const loadOptions = useCallback(async () => {
     try {
       const response = await scheduledSearchesAPI.getOptions();
       if (response.success) {
@@ -78,7 +73,11 @@ export default function ScheduledSearchConfig({
     } catch (error) {
       console.error('Erreur lors du chargement des options:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadOptions();
+  }, [loadOptions]);
 
   const handleFrequencyChange = (newFrequency: string) => {
     onFrequencyChange(newFrequency);
@@ -88,13 +87,13 @@ export default function ScheduledSearchConfig({
     }
   };
 
-  const handleCustomScheduleChange = (field: keyof CustomSchedule, value: any) => {
+  const handleCustomScheduleChange = (field: keyof CustomSchedule, value: string[] | number) => {
     const newSchedule = { ...localCustomSchedule };
     
     if (Array.isArray(value)) {
-      (newSchedule as any)[field] = value;
+      (newSchedule as Record<string, string[]>)[field] = value;
     } else if (typeof value === 'number') {
-      (newSchedule as any)[field] = value;
+      (newSchedule as Record<string, number>)[field] = value;
     }
     
     setLocalCustomSchedule(newSchedule);

@@ -66,7 +66,7 @@ export default function ThemeDemo() {
           <div className="p-4 bg-blue-50 dark:bg-blue-900/50 rounded-lg border border-blue-200 dark:border-blue-700">
             <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Carte bleue</h4>
             <p className="text-blue-700 dark:text-blue-300 text-sm">
-              Cette carte utilise des couleurs bleues qui s'adaptent au thème.
+              Cette carte utilise des couleurs bleues qui s&apos;adaptent au thème.
             </p>
           </div>
         </div>

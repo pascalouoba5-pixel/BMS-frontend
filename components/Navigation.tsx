@@ -4,18 +4,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getRoleMenu, canAccessPage } from '../utils/permissions';
+import { getRoleMenu } from '../utils/permissions';
+
+interface NavItem {
+  name: string;
+  href: string;
+  icon: string;
+}
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [userRole, setUserRole] = useState<string>('');
-  const [navItems, setNavItems] = useState<any[]>([]);
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
 
   useEffect(() => {
     // Récupérer le rôle utilisateur depuis localStorage
     const role = localStorage.getItem('userRole') || 
                  (localStorage.getItem('isSuperAdmin') === 'true' ? 's_admin' : '');
-    setUserRole(role);
 
     // Obtenir le menu selon le rôle
     if (role) {
