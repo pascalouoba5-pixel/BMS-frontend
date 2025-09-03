@@ -1,38 +1,36 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Configuration de l'environnement
   env: {
-    // URL de l'API selon l'environnement
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com',
   },
-
-  // Configuration des images
+  
   images: {
-    domains: [
-      'static.readdy.ai',
-      'localhost',
-      'bms-backend-9k8n.onrender.com'
-    ],
+    domains: ['static.readdy.ai', 'localhost'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'static.readdy.ai',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'bms-backend-9k8n.onrender.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
 
-  // Configuration des headers
-  async headers() {
+  headers: async () => {
     return [
-      {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, DELETE, OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-        ],
-      },
       {
         source: '/(.*)',
         headers: [
@@ -53,18 +51,11 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Configuration de la compilation
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // Configuration du build
-  experimental: {
-    optimizeCss: true,
-  },
-
-  // Configuration des redirections
-  async redirects() {
+  redirects: async () => {
     return [
       {
         source: '/api',
@@ -74,19 +65,24 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Configuration des rewrites
-  async rewrites() {
+  rewrites: async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com';
+    
+    // Vérifier que l'URL est valide
+    if (!apiUrl || apiUrl === 'undefined') {
+      console.warn('⚠️ NEXT_PUBLIC_API_URL non définie, utilisation de l\'URL par défaut');
+      return [];
+    }
+
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+        destination: `${apiUrl}/api/:path*`,
       },
     ];
   },
 
-  // Configuration du webpack
   webpack: (config, { dev, isServer }) => {
-    // Optimisations pour la production
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
@@ -99,24 +95,19 @@ const nextConfig: NextConfig = {
         },
       };
     }
-
     return config;
   },
 
-  // Configuration des types
   typescript: {
     ignoreBuildErrors: false,
   },
 
-  // Configuration ESLint
   eslint: {
     ignoreDuringBuilds: false,
   },
 
-  // Configuration de la sortie
   output: 'standalone',
 
-  // Configuration des variables d'environnement
   publicRuntimeConfig: {
     apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com',
   },

@@ -1,49 +1,62 @@
-# Fichiers de développement
-.env.local
-.env.development
-.env.test
-.env.production
+# Git
+.git
+.gitignore
 
-# Logs
-*.log
+# Dependencies
+node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Dossiers de build temporaires
-.next/
-out/
-dist/
-build/
+# Build outputs
+.next
+out
+build
+dist
 
-# Dossiers de développement
-node_modules/
-.git/
-.vscode/
-.idea/
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Fichiers de test
-test-*.js
-test-*.html
-*.test.js
-*.spec.js
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
 
-# Fichiers de configuration locaux
-start-*.ps1
-start-*.bat
-*.bat
-*.ps1
+# OS
+.DS_Store
+Thumbs.db
 
-# Fichiers de documentation
-*.md
-README_*.md
+# Logs
+*.log
+logs
 
-# Fichiers de trace
-trace*.log
+# Cache
+.cache
+.parcel-cache
+.eslintcache
+.stylelintcache
 
-# Fichiers Docker
-Dockerfile
-docker-compose*.yml
+# Test coverage
+coverage
+.nyc_output
 
-# Fichiers de configuration Render
-render.yaml
+# Temporary files
+*.tmp
+*.temp
+tmp
+temp
+
+# Documentation
+README_GIT_IMPORT.md
+clean-frontend.ps1
+test-api-frontend.ps1
+
+# Package locks
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

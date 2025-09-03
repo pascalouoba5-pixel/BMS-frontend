@@ -1,85 +1,127 @@
-# Script de déploiement Vercel pour le Frontend BMS
-# Exécutez ce script depuis le dossier frontend
-
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "    DEPLOIEMENT VERCEL - FRONTEND BMS" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
+# Script PowerShell pour déployer le frontend BMS sur Vercel
+Write-Host "🚀 Déploiement du Frontend BMS sur Vercel..." -ForegroundColor Green
 Write-Host ""
 
-# Vérification de l'environnement
-Write-Host "[1/5] Vérification de l'environnement..." -ForegroundColor Yellow
+# Vérifier que nous sommes dans le bon répertoire
 if (-not (Test-Path "package.json")) {
-    Write-Host "ERREUR: package.json non trouvé. Assurez-vous d'être dans le dossier frontend." -ForegroundColor Red
-    Read-Host "Appuyez sur Entrée pour continuer"
+    Write-Host "❌ Erreur: Ce script doit être exécuté depuis le dossier frontend" -ForegroundColor Red
     exit 1
 }
 
-# Installation des dépendances
-Write-Host "[2/5] Installation des dépendances..." -ForegroundColor Yellow
-try {
-    npm install
-    if ($LASTEXITCODE -ne 0) {
-        throw "Échec de l'installation des dépendances"
-    }
-} catch {
-    Write-Host "ERREUR: $($_.Exception.Message)" -ForegroundColor Red
-    Read-Host "Appuyez sur Entrée pour continuer"
-    exit 1
-}
+Write-Host "✅ Répertoire frontend détecté" -ForegroundColor Green
 
-# Vérification de la configuration
-Write-Host "[3/5] Vérification de la configuration..." -ForegroundColor Yellow
-if (-not (Test-Path "vercel.json")) {
-    Write-Host "ERREUR: vercel.json non trouvé. Vérifiez la configuration." -ForegroundColor Red
-    Read-Host "Appuyez sur Entrée pour continuer"
-    exit 1
-}
-
-# Build de l'application
-Write-Host "[4/5] Build de l'application..." -ForegroundColor Yellow
-try {
-    npm run build
-    if ($LASTEXITCODE -ne 0) {
-        throw "Échec du build. Vérifiez les erreurs TypeScript."
-    }
-} catch {
-    Write-Host "ERREUR: $($_.Exception.Message)" -ForegroundColor Red
-    Read-Host "Appuyez sur Entrée pour continuer"
-    exit 1
-}
-
-# Déploiement sur Vercel
-Write-Host "[5/5] Déploiement sur Vercel..." -ForegroundColor Yellow
-Write-Host ""
-Write-Host "Instructions:" -ForegroundColor Green
-Write-Host "1. Assurez-vous d'être connecté à Vercel (vercel login)" -ForegroundColor White
-Write-Host "2. Exécutez: vercel --prod" -ForegroundColor White
-Write-Host "3. Suivez les instructions à l'écran" -ForegroundColor White
-Write-Host ""
-Write-Host "Ou utilisez le dashboard Vercel:" -ForegroundColor Green
-Write-Host "- Allez sur vercel.com" -ForegroundColor White
-Write-Host "- Importez votre repository" -ForegroundColor White
-Write-Host "- Configurez le dossier racine: frontend" -ForegroundColor White
-Write-Host ""
-
-# Vérification de Vercel CLI
-Write-Host "Vérification de Vercel CLI..." -ForegroundColor Yellow
+# Vérifier que Vercel CLI est installé
 try {
     $vercelVersion = vercel --version 2>$null
-    if ($vercelVersion) {
-        Write-Host "✅ Vercel CLI installé: $vercelVersion" -ForegroundColor Green
-        Write-Host ""
-        Write-Host "Voulez-vous déployer maintenant? (y/n)" -ForegroundColor Cyan
-        $deploy = Read-Host
-        if ($deploy -eq "y" -or $deploy -eq "Y") {
-            Write-Host "Déploiement en cours..." -ForegroundColor Green
-            vercel --prod
-        }
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Vercel CLI détecté: $vercelVersion" -ForegroundColor Green
     } else {
-        Write-Host "⚠️  Vercel CLI non installé. Installez-le avec: npm install -g vercel" -ForegroundColor Yellow
+        throw "Vercel CLI non trouvé"
     }
 } catch {
-    Write-Host "⚠️  Vercel CLI non installé. Installez-le avec: npm install -g vercel" -ForegroundColor Yellow
+    Write-Host "❌ Vercel CLI non installé. Installation en cours..." -ForegroundColor Red
+    npm install -g vercel
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Erreur lors de l'installation de Vercel CLI" -ForegroundColor Red
+        exit 1
+    }
 }
 
-Read-Host "Appuyez sur Entrée pour continuer"
+# Vérifier la configuration
+Write-Host ""
+Write-Host "🔧 Vérification de la configuration..." -ForegroundColor Yellow
+
+$configFiles = @(
+    "vercel.json",
+    "next.config.ts",
+    "package.json"
+)
+
+foreach ($file in $configFiles) {
+    if (Test-Path $file) {
+        Write-Host "✅ $file" -ForegroundColor Green
+    } else {
+        Write-Host "❌ $file manquant" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# Vérifier les variables d'environnement
+Write-Host ""
+Write-Host "🌍 Configuration des variables d'environnement..." -ForegroundColor Yellow
+
+$envVars = @{
+    "NEXT_PUBLIC_API_URL" = "https://bms-backend-9k8n.onrender.com"
+    "NEXT_PUBLIC_APP_NAME" = "BMS Frontend"
+    "NODE_ENV" = "production"
+}
+
+foreach ($key in $envVars.Keys) {
+    Write-Host "   $key = $($envVars[$key])" -ForegroundColor Cyan
+}
+
+# Nettoyer le projet
+Write-Host ""
+Write-Host "🧹 Nettoyage du projet..." -ForegroundColor Yellow
+
+if (Test-Path ".next") {
+    Remove-Item -Path ".next" -Recurse -Force
+    Write-Host "✅ Dossier .next supprimé" -ForegroundColor Green
+}
+
+if (Test-Path "node_modules") {
+    Write-Host "⚠️  node_modules détecté - sera géré par Vercel" -ForegroundColor Yellow
+}
+
+# Instructions de déploiement
+Write-Host ""
+Write-Host "🚀 Instructions de déploiement:" -ForegroundColor Green
+Write-Host "1. Se connecter à Vercel: vercel login" -ForegroundColor White
+Write-Host "2. Déployer: vercel --prod" -ForegroundColor White
+Write-Host "3. Ou déployer avec configuration: vercel --prod --yes" -ForegroundColor White
+
+Write-Host ""
+Write-Host "🔧 Configuration recommandée lors du déploiement:" -ForegroundColor Yellow
+Write-Host "- Framework: Next.js" -ForegroundColor White
+Write-Host "- Build Command: npm run build" -ForegroundColor White
+Write-Host "- Output Directory: .next" -ForegroundColor White
+Write-Host "- Install Command: npm install" -ForegroundColor White
+
+Write-Host ""
+Write-Host "🌍 Variables d'environnement à configurer sur Vercel:" -ForegroundColor Yellow
+Write-Host "- NEXT_PUBLIC_API_URL = https://bms-backend-9k8n.onrender.com" -ForegroundColor Cyan
+Write-Host "- NODE_ENV = production" -ForegroundColor Cyan
+
+# Démarrer le déploiement
+Write-Host ""
+Write-Host "🎯 Voulez-vous démarrer le déploiement maintenant ? (O/N)" -ForegroundColor Green
+$response = Read-Host
+
+if ($response -eq "O" -or $response -eq "o" -or $response -eq "Y" -or $response -eq "y") {
+    Write-Host ""
+    Write-Host "🚀 Démarrage du déploiement..." -ForegroundColor Green
+    
+    try {
+        # Vérifier la connexion
+        Write-Host "📡 Vérification de la connexion Vercel..." -ForegroundColor Yellow
+        vercel whoami
+        
+        # Déployer
+        Write-Host "📤 Déploiement en cours..." -ForegroundColor Yellow
+        vercel --prod --yes
+        
+    } catch {
+        Write-Host "❌ Erreur lors du déploiement: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "💡 Essayez de vous connecter d'abord: vercel login" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host ""
+    Write-Host "ℹ️  Déploiement annulé. Exécutez manuellement:" -ForegroundColor Yellow
+    Write-Host "   vercel --prod" -ForegroundColor White
+}
+
+Write-Host ""
+Write-Host "✅ Script terminé !" -ForegroundColor Green
+
+# Garder la fenêtre ouverte
+Read-Host "Appuyez sur Entrée pour fermer..."
