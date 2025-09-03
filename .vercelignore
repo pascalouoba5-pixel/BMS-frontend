@@ -1,0 +1,49 @@
+# Fichiers de développement
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dossiers de build temporaires
+.next/
+out/
+dist/
+build/
+
+# Dossiers de développement
+node_modules/
+.git/
+.vscode/
+.idea/
+
+# Fichiers de test
+test-*.js
+test-*.html
+*.test.js
+*.spec.js
+
+# Fichiers de configuration locaux
+start-*.ps1
+start-*.bat
+*.bat
+*.ps1
+
+# Fichiers de documentation
+*.md
+README_*.md
+
+# Fichiers de trace
+trace*.log
+
+# Fichiers Docker
+Dockerfile
+docker-compose*.yml
+
+# Fichiers de configuration Render
+render.yaml

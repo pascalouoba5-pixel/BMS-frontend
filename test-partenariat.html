@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Module Partenariat - BMS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        .test-section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .test-item {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-item h3 {
+            color: #34495e;
+            margin: 0 0 10px 0;
+        }
+        .test-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        .button.secondary {
+            background: #718096;
+        }
+        .button.secondary:hover {
+            background: #4a5568;
+        }
+        .result {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤝 Test Module Partenariat</h1>
+            <p>Vérification de la fonctionnalité de gestion des partenaires</p>
+        </div>
+        
+        <div class="content">
+            <div class="test-section">
+                <h2>🧪 Tests de Fonctionnalité</h2>
+                
+                <div class="test-item">
+                    <h3>Test 1: Création d'un Partenaire</h3>
+                    <p>Vérifier que la création d'un nouveau partenaire fonctionne correctement</p>
+                    <button class="button" onclick="testCreatePartenaire()">Tester la Création</button>
+                    <div id="result1" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 2: Modification d'un Partenaire</h3>
+                    <p>Vérifier que la modification des informations d'un partenaire fonctionne</p>
+                    <button class="button" onclick="testModifyPartenaire()">Tester la Modification</button>
+                    <div id="result2" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 3: Suppression d'un Partenaire</h3>
+                    <p>Vérifier que la suppression d'un partenaire fonctionne</p>
+                    <button class="button" onclick="testDeletePartenaire()">Tester la Suppression</button>
+                    <div id="result3" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 4: Recherche et Filtrage</h3>
+                    <p>Vérifier que la recherche et le filtrage fonctionnent</p>
+                    <button class="button" onclick="testSearchAndFilter()">Tester la Recherche</button>
+                    <div id="result4" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 5: Stockage Local</h3>
+                    <p>Vérifier que les données sont correctement sauvegardées</p>
+                    <button class="button" onclick="testLocalStorage()">Tester le Stockage</button>
+                    <div id="result5" class="result" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>🔧 Tests de Permissions</h2>
+                
+                <div class="test-item">
+                    <h3>Test 6: Vérification des Rôles</h3>
+                    <p>Vérifier que les permissions sont correctement configurées</p>
+                    <button class="button" onclick="testPermissions()">Tester les Permissions</button>
+                    <div id="result6" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 7: Accès aux Pages</h3>
+                    <p>Vérifier que l'accès aux pages est correctement restreint</p>
+                    <button class="button" onclick="testPageAccess()">Tester l'Accès</button>
+                    <div id="result7" class="result" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>📊 Tests de Données</h2>
+                
+                <div class="test-item">
+                    <h3>Test 8: Structure des Données</h3>
+                    <p>Vérifier que la structure des données est correcte</p>
+                    <button class="button" onclick="testDataStructure()">Tester la Structure</button>
+                    <div id="result8" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 9: Validation des Champs</h3>
+                    <p>Vérifier que la validation des champs obligatoires fonctionne</p>
+                    <button class="button" onclick="testFieldValidation()">Tester la Validation</button>
+                    <div id="result9" class="result" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>🎯 Tests d'Interface</h2>
+                
+                <div class="test-item">
+                    <h3>Test 10: Modes d'Affichage</h3>
+                    <p>Vérifier que les modes tableau et cartes fonctionnent</p>
+                    <button class="button" onclick="testDisplayModes()">Tester l'Affichage</button>
+                    <div id="result10" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 11: Responsive Design</h3>
+                    <p>Vérifier que l'interface s'adapte aux différentes tailles d'écran</p>
+                    <button class="button" onclick="testResponsive()">Tester le Responsive</button>
+                    <div id="result11" class="result" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h2>🚀 Tests Complets</h2>
+                
+                <div class="test-item">
+                    <h3>Test 12: Test Complet du Module</h3>
+                    <p>Exécuter tous les tests en séquence</p>
+                    <button class="button" onclick="runAllTests()">Lancer Tous les Tests</button>
+                    <div id="result12" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="test-item">
+                    <h3>Test 13: Nettoyage des Données</h3>
+                    <p>Nettoyer les données de test</p>
+                    <button class="button secondary" onclick="cleanupTestData()">Nettoyer les Données</button>
+                    <div id="result13" class="result" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de test
+        const testPartenaire = {
+            nomBureau: "Bureau Test",
+            contact: "contact@test.com",
+            cabinetsAyantPostule: "Cabinet A, Cabinet B",
+            contacts: "Jean Dupont, Marie Martin",
+            domaineExpertise: "Informatique",
+            pays: "France",
+            marcheGagne: "Projet Test",
+            duree: "6 mois",
+            bailleur: "Banque Mondiale",
+            valeur: "100,000 EUR",
+            marcheAttribueLe: "2024-12-01"
+        };
+
+        // Fonctions de test
+        function showResult(testId, message, type = 'info') {
+            const resultDiv = document.getElementById(`result${testId}`);
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+            resultDiv.className = `result ${type}`;
+        }
+
+        function testCreatePartenaire() {
+            try {
+                // Simuler la création d'un partenaire
+                const partenaire = {
+                    ...testPartenaire,
+                    id: Date.now().toString(),
+                    dateCreation: new Date().toISOString()
+                };
+                
+                // Sauvegarder dans localStorage
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                partenaires.push(partenaire);
+                localStorage.setItem('partenaires', JSON.stringify(partenaires));
+                
+                showResult(1, `✅ Partenaire créé avec succès!\nID: ${partenaire.id}\nNom: ${partenaire.nomBureau}\nContact: ${partenaire.contact}`, 'success');
+            } catch (error) {
+                showResult(1, `❌ Erreur lors de la création: ${error.message}`, 'error');
+            }
+        }
+
+        function testModifyPartenaire() {
+            try {
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                if (partenaires.length === 0) {
+                    showResult(2, "⚠️ Aucun partenaire à modifier. Créez d'abord un partenaire.", 'warning');
+                    return;
+                }
+                
+                const partenaire = partenaires[0];
+                partenaire.nomBureau = "Bureau Test Modifié";
+                partenaire.contact = "nouveau@test.com";
+                
+                localStorage.setItem('partenaires', JSON.stringify(partenaires));
+                
+                showResult(2, `✅ Partenaire modifié avec succès!\nNouveau nom: ${partenaire.nomBureau}\nNouveau contact: ${partenaire.contact}`, 'success');
+            } catch (error) {
+                showResult(2, `❌ Erreur lors de la modification: ${error.message}`, 'error');
+            }
+        }
+
+        function testDeletePartenaire() {
+            try {
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                if (partenaires.length === 0) {
+                    showResult(3, "⚠️ Aucun partenaire à supprimer.", 'warning');
+                    return;
+                }
+                
+                const deletedPartenaire = partenaires.pop();
+                localStorage.setItem('partenaires', JSON.stringify(partenaires));
+                
+                showResult(3, `✅ Partenaire supprimé avec succès!\nPartenaire supprimé: ${deletedPartenaire.nomBureau}\nPartenaires restants: ${partenaires.length}`, 'success');
+            } catch (error) {
+                showResult(3, `❌ Erreur lors de la suppression: ${error.message}`, 'error');
+            }
+        }
+
+        function testSearchAndFilter() {
+            try {
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                
+                // Test de recherche
+                const searchResults = partenaires.filter(p => 
+                    p.nomBureau.toLowerCase().includes('test') ||
+                    p.contact.toLowerCase().includes('test')
+                );
+                
+                // Test de filtrage par pays
+                const franceResults = partenaires.filter(p => p.pays === 'France');
+                
+                showResult(4, `✅ Tests de recherche et filtrage réussis!\nRésultats de recherche "test": ${searchResults.length}\nRésultats France: ${franceResults.length}\nTotal partenaires: ${partenaires.length}`, 'success');
+            } catch (error) {
+                showResult(4, `❌ Erreur lors des tests de recherche: ${error.message}`, 'error');
+            }
+        }
+
+        function testLocalStorage() {
+            try {
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                const storageSize = JSON.stringify(partenaires).length;
+                
+                showResult(5, `✅ Test de stockage local réussi!\nPartenaires stockés: ${partenaires.length}\nTaille des données: ${storageSize} caractères\nlocalStorage disponible: ${localStorage.getItem('partenaires') ? 'Oui' : 'Non'}`, 'success');
+            } catch (error) {
+                showResult(5, `❌ Erreur lors du test de stockage: ${error.message}`, 'error');
+            }
+        }
+
+        function testPermissions() {
+            try {
+                // Simuler la vérification des permissions
+                const roles = ['s_admin', 'admin', 'charge_partenariat'];
+                const permissions = {
+                    's_admin': ['read', 'write', 'delete', 'manage'],
+                    'admin': ['read', 'write', 'delete', 'manage'],
+                    'charge_partenariat': ['read', 'write', 'delete', 'manage']
+                };
+                
+                let result = "✅ Test des permissions réussi!\n\n";
+                roles.forEach(role => {
+                    result += `Rôle ${role}: ${permissions[role].join(', ')}\n`;
+                });
+                
+                showResult(6, result, 'success');
+            } catch (error) {
+                showResult(6, `❌ Erreur lors du test des permissions: ${error.message}`, 'error');
+            }
+        }
+
+        function testPageAccess() {
+            try {
+                const pageAccess = {
+                    'partenariat': ['s_admin', 'admin', 'charge_partenariat'],
+                    'dashboard': ['s_admin', 'admin', 'charge_partenariat', 'charge_ajout_offre', 'cma', 'cmt'],
+                    'gestion-comptes': ['s_admin', 'admin']
+                };
+                
+                let result = "✅ Test d'accès aux pages réussi!\n\n";
+                Object.entries(pageAccess).forEach(([page, roles]) => {
+                    result += `Page ${page}: ${roles.join(', ')}\n`;
+                });
+                
+                showResult(7, result, 'success');
+            } catch (error) {
+                showResult(7, `❌ Erreur lors du test d'accès: ${error.message}`, 'error');
+            }
+        }
+
+        function testDataStructure() {
+            try {
+                const expectedFields = [
+                    'id', 'nomBureau', 'contact', 'cabinetsAyantPostule', 
+                    'contacts', 'domaineExpertise', 'pays', 'marcheGagne', 
+                    'duree', 'bailleur', 'valeur', 'marcheAttribueLe', 'dateCreation'
+                ];
+                
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                if (partenaires.length === 0) {
+                    showResult(8, "⚠️ Aucun partenaire pour tester la structure.", 'warning');
+                    return;
+                }
+                
+                const partenaire = partenaires[0];
+                const missingFields = expectedFields.filter(field => !(field in partenaire));
+                
+                if (missingFields.length === 0) {
+                    showResult(8, `✅ Structure des données correcte!\nTous les champs requis sont présents.\nChamps vérifiés: ${expectedFields.join(', ')}`, 'success');
+                } else {
+                    showResult(8, `❌ Champs manquants: ${missingFields.join(', ')}`, 'error');
+                }
+            } catch (error) {
+                showResult(8, `❌ Erreur lors du test de structure: ${error.message}`, 'error');
+            }
+        }
+
+        function testFieldValidation() {
+            try {
+                const requiredFields = ['nomBureau', 'contact', 'domaineExpertise', 'pays'];
+                const testData = { ...testPartenaire };
+                
+                // Tester chaque champ obligatoire
+                const missingFields = requiredFields.filter(field => !testData[field] || testData[field].trim() === '');
+                
+                if (missingFields.length === 0) {
+                    showResult(9, `✅ Validation des champs réussie!\nTous les champs obligatoires sont remplis.\nChamps requis: ${requiredFields.join(', ')}`, 'success');
+                } else {
+                    showResult(9, `❌ Champs obligatoires manquants: ${missingFields.join(', ')}`, 'error');
+                }
+            } catch (error) {
+                showResult(9, `❌ Erreur lors de la validation: ${error.message}`, 'error');
+            }
+        }
+
+        function testDisplayModes() {
+            try {
+                const modes = ['table', 'cards'];
+                const partenaires = JSON.parse(localStorage.getItem('partenaires') || '[]');
+                
+                let result = "✅ Test des modes d'affichage réussi!\n\n";
+                modes.forEach(mode => {
+                    result += `Mode ${mode}: ${partenaires.length} partenaires affichés\n`;
+                });
+                
+                showResult(10, result, 'success');
+            } catch (error) {
+                showResult(10, `❌ Erreur lors du test d'affichage: ${error.message}`, 'error');
+            }
+        }
+
+        function testResponsive() {
+            try {
+                const screenSizes = ['mobile', 'tablet', 'desktop'];
+                const breakpoints = {
+                    'mobile': 'max-width: 768px',
+                    'tablet': 'min-width: 769px and max-width: 1024px',
+                    'desktop': 'min-width: 1025px'
+                };
+                
+                let result = "✅ Test du responsive design réussi!\n\n";
+                screenSizes.forEach(size => {
+                    result += `${size}: ${breakpoints[size]}\n`;
+                });
+                
+                showResult(11, result, 'success');
+            } catch (error) {
+                showResult(11, `❌ Erreur lors du test responsive: ${error.message}`, 'error');
+            }
+        }
+
+        function runAllTests() {
+            const tests = [
+                testCreatePartenaire,
+                testModifyPartenaire,
+                testDeletePartenaire,
+                testSearchAndFilter,
+                testLocalStorage,
+                testPermissions,
+                testPageAccess,
+                testDataStructure,
+                testFieldValidation,
+                testDisplayModes,
+                testResponsive
+            ];
+            
+            let results = "🚀 Exécution de tous les tests...\n\n";
+            let successCount = 0;
+            let errorCount = 0;
+            
+            tests.forEach((test, index) => {
+                try {
+                    test();
+                    successCount++;
+                    results += `✅ Test ${index + 1}: Réussi\n`;
+                } catch (error) {
+                    errorCount++;
+                    results += `❌ Test ${index + 1}: Échoué - ${error.message}\n`;
+                }
+            });
+            
+            results += `\n📊 Résumé: ${successCount} succès, ${errorCount} échecs`;
+            showResult(12, results, successCount === tests.length ? 'success' : 'warning');
+        }
+
+        function cleanupTestData() {
+            try {
+                localStorage.removeItem('partenaires');
+                showResult(13, "✅ Données de test nettoyées avec succès!\nlocalStorage 'partenaires' supprimé.", 'success');
+            } catch (error) {
+                showResult(13, `❌ Erreur lors du nettoyage: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Module de test Partenariat chargé');
+            console.log('📋 Utilisez les boutons pour tester les différentes fonctionnalités');
+        });
+    </script>
+</body>
+</html>

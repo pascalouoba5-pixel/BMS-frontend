@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Layout BMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --sidebar-width-mobile: 60px;
+            --sidebar-width-collapsed: 0px;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            min-height: 100vh;
+            width: calc(100vw - var(--sidebar-width));
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-width-collapsed);
+        }
+
+        .sidebar.mobile {
+            width: var(--sidebar-width-mobile);
+        }
+
+        .page-header {
+            margin-left: calc(-1 * var(--sidebar-width));
+            width: calc(100vw - var(--sidebar-width));
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: var(--sidebar-width-collapsed);
+                width: 100vw;
+                padding: 15px;
+            }
+            
+            .sidebar-open .main-content {
+                margin-left: var(--sidebar-width-mobile);
+                width: calc(100vw - var(--sidebar-width-mobile));
+            }
+            
+            .page-header {
+                margin-left: 0;
+                width: 100vw;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .page-header {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+
+        .test-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .test-button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-lg font-bold text-gray-900">BMS Sidebar</h2>
+                <p class="text-sm text-gray-600">Menu de navigation</p>
+            </div>
+            <nav class="p-4">
+                <div class="space-y-2">
+                    <div class="p-3 bg-blue-50 text-blue-700 rounded-lg">
+                        📊 Dashboard
+                    </div>
+                    <div class="p-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        📋 Offres
+                    </div>
+                    <div class="p-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        🔍 Recherche
+                    </div>
+                    <div class="p-3 text-gray-700 hover:bg-gray-50 rounded-lg">
+                        👥 Utilisateurs
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Contenu principal -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="page-header bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-200 sticky top-0 z-40">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-center py-4">
+                        <h1 class="text-2xl font-bold text-gray-900">BMS - Test Layout</h1>
+                        <div class="flex space-x-4">
+                            <button class="test-button" onclick="toggleSidebar()">Toggle Sidebar</button>
+                            <button class="test-button" onclick="toggleMobile()">Toggle Mobile</button>
+                            <button class="test-button" onclick="resetLayout()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Contenu de test -->
+            <div class="max-w-7xl mx-auto py-8">
+                <div class="test-card">
+                    <h2 class="text-xl font-bold mb-4">Test de Cadrage</h2>
+                    <p class="text-gray-600 mb-4">
+                        Cette page teste le layout et le cadrage du contenu principal par rapport à la sidebar.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="test-card">
+                            <h3 class="font-bold mb-2">Carte 1</h3>
+                            <p class="text-sm text-gray-600">Contenu de test pour vérifier l'alignement</p>
+                        </div>
+                        <div class="test-card">
+                            <h3 class="font-bold mb-2">Carte 2</h3>
+                            <p class="text-sm text-gray-600">Contenu de test pour vérifier l'alignement</p>
+                        </div>
+                        <div class="test-card">
+                            <h3 class="font-bold mb-2">Carte 3</h3>
+                            <p class="text-sm text-gray-600">Contenu de test pour vérifier l'alignement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <h2 class="text-xl font-bold mb-4">Informations de Layout</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-bold mb-2">Variables CSS</h3>
+                            <ul class="text-sm space-y-1">
+                                <li><strong>--sidebar-width:</strong> <span id="sidebarWidth">250px</span></li>
+                                <li><strong>--sidebar-width-mobile:</strong> <span id="sidebarWidthMobile">60px</span></li>
+                                <li><strong>--sidebar-width-collapsed:</strong> <span id="sidebarWidthCollapsed">0px</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-2">État Actuel</h3>
+                            <ul class="text-sm space-y-1">
+                                <li><strong>Sidebar:</strong> <span id="sidebarState">Ouverte</span></li>
+                                <li><strong>Mode:</strong> <span id="modeState">Desktop</span></li>
+                                <li><strong>Largeur écran:</strong> <span id="screenWidth">-</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let isSidebarOpen = true;
+        let isMobileMode = false;
+
+        function updateInfo() {
+            document.getElementById('sidebarWidth').textContent = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
+            document.getElementById('sidebarWidthMobile').textContent = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-mobile');
+            document.getElementById('sidebarWidthCollapsed').textContent = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-collapsed');
+            document.getElementById('sidebarState').textContent = isSidebarOpen ? 'Ouverte' : 'Fermée';
+            document.getElementById('modeState').textContent = isMobileMode ? 'Mobile' : 'Desktop';
+            document.getElementById('screenWidth').textContent = window.innerWidth + 'px';
+        }
+
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (isSidebarOpen) {
+                sidebar.classList.remove('collapsed');
+                mainContent.style.marginLeft = 'var(--sidebar-width)';
+                mainContent.style.width = 'calc(100vw - var(--sidebar-width))';
+            } else {
+                sidebar.classList.add('collapsed');
+                mainContent.style.marginLeft = 'var(--sidebar-width-collapsed)';
+                mainContent.style.width = '100vw';
+            }
+            
+            updateInfo();
+        }
+
+        function toggleMobile() {
+            isMobileMode = !isMobileMode;
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (isMobileMode) {
+                sidebar.classList.add('mobile');
+                sidebar.classList.remove('collapsed');
+                mainContent.style.marginLeft = 'var(--sidebar-width-mobile)';
+                mainContent.style.width = 'calc(100vw - var(--sidebar-width-mobile))';
+            } else {
+                sidebar.classList.remove('mobile');
+                sidebar.classList.remove('collapsed');
+                mainContent.style.marginLeft = 'var(--sidebar-width)';
+                mainContent.style.width = 'calc(100vw - var(--sidebar-width))';
+            }
+            
+            updateInfo();
+        }
+
+        function resetLayout() {
+            isSidebarOpen = true;
+            isMobileMode = false;
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.remove('collapsed', 'mobile');
+            mainContent.style.marginLeft = 'var(--sidebar-width)';
+            mainContent.style.width = 'calc(100vw - var(--sidebar-width))';
+            
+            updateInfo();
+        }
+
+        // Mise à jour initiale
+        updateInfo();
+
+        // Mise à jour lors du redimensionnement
+        window.addEventListener('resize', updateInfo);
+    </script>
+</body>
+</html>

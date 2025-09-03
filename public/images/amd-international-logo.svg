@@ -1,0 +1,31 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Section - Dark Blue Background with AMD letters -->
+  <rect x="0" y="0" width="200" height="50" fill="#1e3a8a"/>
+  
+  <!-- Letter A -->
+  <rect x="10" y="10" width="50" height="30" fill="#1e3a8a" stroke="white" stroke-width="1"/>
+  <text x="35" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">A</text>
+  
+  <!-- Vertical separator -->
+  <line x1="65" y1="10" x2="65" y2="40" stroke="white" stroke-width="2"/>
+  
+  <!-- Letter M -->
+  <rect x="70" y="10" width="50" height="30" fill="#1e3a8a" stroke="white" stroke-width="1"/>
+  <text x="95" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">M</text>
+  
+  <!-- Vertical separator -->
+  <line x1="125" y1="10" x2="125" y2="40" stroke="white" stroke-width="2"/>
+  
+  <!-- Letter D -->
+  <rect x="130" y="10" width="50" height="30" fill="#1e3a8a" stroke="white" stroke-width="1"/>
+  <text x="155" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">D</text>
+  
+  <!-- Bottom Section - White Background -->
+  <rect x="0" y="50" width="200" height="30" fill="white"/>
+  
+  <!-- Curved line -->
+  <path d="M 20 60 Q 100 45 180 60" stroke="#f59e0b" stroke-width="3" fill="none"/>
+  
+  <!-- INTERNATIONAL text -->
+  <text x="100" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e3a8a" text-anchor="middle" letter-spacing="2">INTERNATIONAL</text>
+</svg>

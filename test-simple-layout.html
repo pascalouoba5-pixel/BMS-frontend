@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Layout Simple BMS</title>
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            width: calc(100vw - var(--sidebar-width));
+            background: #f8fafc;
+            position: relative;
+        }
+
+        .page-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 2rem;
+            margin: 0;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        .page-content {
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .test-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .sidebar-nav {
+            padding: 1rem;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .nav-item.active {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 style="color: #1d4ed8; font-size: 1.5rem;">BMS</h2>
+                <p style="color: #6b7280; font-size: 0.875rem;">Système de Gestion</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active">📊 Dashboard</div>
+                <div class="nav-item">📋 Offres</div>
+                <div class="nav-item">🔍 Recherche</div>
+                <div class="nav-item">👥 Utilisateurs</div>
+                <div class="nav-item">⚙️ Paramètres</div>
+            </nav>
+        </div>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="page-header">
+                <h1 style="color: #1f2937; font-size: 1.875rem; font-weight: bold;">
+                    BMS - Test Layout
+                </h1>
+                <p style="color: #6b7280; margin-top: 0.5rem;">
+                    Test du layout corrigé avec sidebar fixe et contenu bien cadré
+                </p>
+            </header>
+
+            <!-- Contenu -->
+            <div class="page-content">
+                <div class="test-card">
+                    <h2 style="color: #1f2937; margin-bottom: 1rem;">✅ Layout Corrigé</h2>
+                    <p style="color: #6b7280; margin-bottom: 1rem;">
+                        Cette page teste le layout corrigé avec :
+                    </p>
+                    <ul style="color: #6b7280; margin-left: 1.5rem;">
+                        <li>Sidebar fixe de 250px de largeur</li>
+                        <li>Contenu principal bien cadré à droite</li>
+                        <li>Header parfaitement aligné</li>
+                        <li>Responsive design fonctionnel</li>
+                    </ul>
+                </div>
+
+                <div class="test-card">
+                    <h3 style="color: #1f2937; margin-bottom: 1rem;">🎯 Points Clés</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="padding: 1rem; background: #f0f9ff; border-radius: 0.5rem; border: 1px solid #bae6fd;">
+                            <h4 style="color: #0369a1; margin-bottom: 0.5rem;">Sidebar</h4>
+                            <p style="color: #0c4a6e; font-size: 0.875rem;">Largeur fixe de 250px, position fixe</p>
+                        </div>
+                        <div style="padding: 1rem; background: #f0fdf4; border-radius: 0.5rem; border: 1px solid #bbf7d0;">
+                            <h4 style="color: #15803d; margin-bottom: 0.5rem;">Contenu</h4>
+                            <p style="color: #14532d; font-size: 0.875rem;">Margin-left: 250px, largeur adaptée</p>
+                        </div>
+                        <div style="padding: 1rem; background: #fef3c7; border-radius: 0.5rem; border: 1px solid #fcd34d;">
+                            <h4 style="color: #a16207; margin-bottom: 0.5rem;">Responsive</h4>
+                            <p style="color: #92400e; font-size: 0.875rem;">Adaptation automatique sur mobile</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <h3 style="color: #1f2937; margin-bottom: 1rem;">📱 Test Responsive</h3>
+                    <p style="color: #6b7280; margin-bottom: 1rem;">
+                        Redimensionnez votre navigateur pour tester le responsive design.
+                    </p>
+                    <div style="background: #f3f4f6; padding: 1rem; border-radius: 0.5rem;">
+                        <p style="color: #374151; font-size: 0.875rem;">
+                            <strong>Largeur actuelle :</strong> <span id="screenWidth">-</span>px
+                        </p>
+                        <p style="color: #374151; font-size: 0.875rem;">
+                            <strong>Mode :</strong> <span id="mode">Desktop</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateInfo() {
+            const width = window.innerWidth;
+            const mode = width <= 768 ? 'Mobile' : 'Desktop';
+            
+            document.getElementById('screenWidth').textContent = width;
+            document.getElementById('mode').textContent = mode;
+        }
+
+        // Mise à jour initiale
+        updateInfo();
+
+        // Mise à jour lors du redimensionnement
+        window.addEventListener('resize', updateInfo);
+    </script>
+</body>
+</html>
