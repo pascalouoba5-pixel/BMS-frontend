@@ -2,6 +2,6 @@
   "headers": {
     "x-nextjs-stale-time": "4294967294",
     "x-nextjs-prerender": "1",
-    "x-next-cache-tags": "_N_T_/layout,_N_T_/repartition/layout,_N_T_/repartition/pole-lead/layout,_N_T_/repartition/pole-lead/[pole]/layout,_N_T_/repartition/pole-lead/[pole]/page,_N_T_/repartition/pole-lead/P%C3%B4le%20Finances%20Publiques/"
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/repartition/layout,_N_T_/repartition/pole-lead/layout,_N_T_/repartition/pole-lead/[pole]/layout,_N_T_/repartition/pole-lead/[pole]/page,_N_T_/repartition/pole-lead/P%C3%B4le%20Finances%20Publiques"
   }
 }

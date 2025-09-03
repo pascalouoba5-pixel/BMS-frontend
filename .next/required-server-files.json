@@ -2,9 +2,8 @@
   "version": 1,
   "config": {
     "env": {
-      "NEXT_PUBLIC_API_URL": "http://localhost:5000"
+      "NEXT_PUBLIC_API_URL": "https://bms-backend-9k8n.onrender.com"
     },
-    "webpack": null,
     "eslint": {
       "ignoreDuringBuilds": false
     },
@@ -48,10 +47,13 @@
         256,
         384
       ],
-      "path": "/_next/image/",
+      "path": "/_next/image",
       "loader": "default",
       "loaderFile": "",
-      "domains": [],
+      "domains": [
+        "static.readdy.ai",
+        "localhost"
+      ],
       "disableStaticImages": false,
       "minimumCacheTTL": 60,
       "formats": [
@@ -60,8 +62,27 @@
       "dangerouslyAllowSVG": false,
       "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;",
       "contentDispositionType": "attachment",
-      "remotePatterns": [],
-      "unoptimized": true
+      "remotePatterns": [
+        {
+          "protocol": "https",
+          "hostname": "static.readdy.ai",
+          "port": "",
+          "pathname": "/**"
+        },
+        {
+          "protocol": "http",
+          "hostname": "localhost",
+          "port": "3000",
+          "pathname": "/**"
+        },
+        {
+          "protocol": "https",
+          "hostname": "bms-backend-9k8n.onrender.com",
+          "port": "",
+          "pathname": "/**"
+        }
+      ],
+      "unoptimized": false
     },
     "devIndicators": {
       "position": "bottom-left"
@@ -75,12 +96,14 @@
     },
     "basePath": "",
     "sassOptions": {},
-    "trailingSlash": true,
+    "trailingSlash": false,
     "i18n": null,
     "productionBrowserSourceMaps": false,
     "excludeDefaultMomentLocales": true,
     "serverRuntimeConfig": {},
-    "publicRuntimeConfig": {},
+    "publicRuntimeConfig": {
+      "apiUrl": "https://bms-backend-9k8n.onrender.com"
+    },
     "reactProductionProfiling": false,
     "reactStrictMode": null,
     "reactMaxHeadersLength": 6000,
@@ -90,7 +113,7 @@
     "logging": {},
     "expireTime": 31536000,
     "staticPageGenerationTimeout": 60,
-    "output": "export",
+    "output": "standalone",
     "modularizeImports": {
       "@mui/icons-material": {
         "transform": "@mui/icons-material/{{member}}"
@@ -165,7 +188,7 @@
       "imgOptSequentialRead": null,
       "isrFlushToDisk": true,
       "workerThreads": false,
-      "optimizeCss": true,
+      "optimizeCss": false,
       "nextScriptWorkers": false,
       "scrollRestoration": false,
       "externalDir": false,
@@ -281,10 +304,29 @@
     "htmlLimitedBots": "Mediapartners-Google|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti",
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
+    "compiler": {
+      "removeConsole": true
+    },
     "turbopack": {
       "root": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend"
     },
-    "_originalRedirects": []
+    "_originalRewrites": {
+      "beforeFiles": [],
+      "afterFiles": [
+        {
+          "source": "/api/:path*",
+          "destination": "https://bms-backend-9k8n.onrender.com/api/:path*"
+        }
+      ],
+      "fallback": []
+    },
+    "_originalRedirects": [
+      {
+        "source": "/api",
+        "destination": "/api/health",
+        "permanent": false
+      }
+    ]
   },
   "appDir": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend",
   "relativeAppDir": "",
@@ -305,9 +347,7 @@
     ".next\\server\\server-reference-manifest.json",
     ".next\\BUILD_ID",
     ".next\\server\\next-font-manifest.js",
-    ".next\\server\\next-font-manifest.json",
-    ".next\\static\\css\\1c8736b0a21d2e81.css",
-    ".next\\static\\css\\5be36c970eb89460.css"
+    ".next\\server\\next-font-manifest.json"
   ],
   "ignore": [
     "node_modules\\next\\dist\\compiled\\@ampproject\\toolbox-optimizer\\**\\*"

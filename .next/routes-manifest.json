@@ -5,24 +5,17 @@
   "basePath": "",
   "redirects": [
     {
-      "source": "/:file((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+)/",
-      "destination": "/:file",
+      "source": "/:path+/",
+      "destination": "/:path+",
       "internal": true,
-      "missing": [
-        {
-          "type": "header",
-          "key": "x-nextjs-data"
-        }
-      ],
       "statusCode": 308,
-      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+))/$"
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
     },
     {
-      "source": "/:notfile((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+)",
-      "destination": "/:notfile/",
-      "internal": true,
-      "statusCode": 308,
-      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+))$"
+      "source": "/api",
+      "destination": "/api/health",
+      "statusCode": 307,
+      "regex": "^(?!/_next)/api(?:/)?$"
     }
   ],
   "headers": [
@@ -30,16 +23,16 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
           "key": "X-Frame-Options",
           "value": "DENY"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin-when-cross-origin"
         }
       ],
       "regex": "^(?:/(.*))(?:/)?$"
@@ -79,6 +72,12 @@
       "regex": "^/ajouter\\-offre(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/ajouter\\-offre(?:/)?$"
+    },
+    {
+      "page": "/api-test",
+      "regex": "^/api\\-test(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api\\-test(?:/)?$"
     },
     {
       "page": "/gestion-comptes",
@@ -200,5 +199,11 @@
     "pathHeader": "x-nextjs-rewritten-path",
     "queryHeader": "x-nextjs-rewritten-query"
   },
-  "rewrites": []
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://bms-backend-9k8n.onrender.com/api/:path*",
+      "regex": "^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    }
+  ]
 }

@@ -1,12 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { PerformancePolesDetailed } from '../../services/api';
 // Types pour les performances
 interface PerformanceOverview {
-  totalRevenue: number;
-  totalOrders: number;
-  averageOrderValue: number;
-  growthRate: number;
+  stats: {
+    totalOffres: number;
+    offresApprouvees: number;
+    offresEnAttente: number;
+    offresRejetees: number;
+    offresPrioritaires: number;
+    tauxApprobation: number;
+    tauxGagnees: number;
+    tauxPerdues: number;
+    tauxEnCours: number;
+  };
+  typesOffre: Array<{
+    nom: string;
+    total: number;
+    gagnees: number;
+    perdues: number;
+    tauxGagnees: number;
+    tauxPerdues: number;
+  }>;
 }
 
 interface PerformancePoles {
@@ -18,11 +34,14 @@ interface PerformancePoles {
 }
 
 interface PerformanceCommerciaux {
-  id: string;
-  name: string;
-  revenue: number;
-  orders: number;
-  conversionRate: number;
+  nom: string;
+  role: string;
+  totalOffres: number;
+  offresApprouvees: number;
+  offresEnAttente: number;
+  offresRejetees: number;
+  offresPrioritaires: number;
+  tauxReussite: number;
 }
 
 // API simulée pour les performances
@@ -31,10 +50,43 @@ const performanceAPI = {
     // Simulation d'appel API
     return {
       data: {
-        totalRevenue: 125000,
-        totalOrders: 450,
-        averageOrderValue: 278,
-        growthRate: 15.5
+        stats: {
+          totalOffres: 450,
+          offresApprouvees: 180,
+          offresEnAttente: 120,
+          offresRejetees: 150,
+          offresPrioritaires: 45,
+          tauxApprobation: 40,
+          tauxGagnees: 35,
+          tauxPerdues: 33,
+          tauxEnCours: 27
+        },
+        typesOffre: [
+          {
+            nom: "Informatique",
+            total: 180,
+            gagnees: 65,
+            perdues: 60,
+            tauxGagnees: 36,
+            tauxPerdues: 33
+          },
+          {
+            nom: "Commercial",
+            total: 120,
+            gagnees: 45,
+            perdues: 40,
+            tauxGagnees: 38,
+            tauxPerdues: 33
+          },
+          {
+            nom: "Marketing",
+            total: 150,
+            gagnees: 70,
+            perdues: 50,
+            tauxGagnees: 47,
+            tauxPerdues: 33
+          }
+        ]
       }
     };
   },
@@ -52,9 +104,86 @@ const performanceAPI = {
   async getCommerciaux(startDate: string, endDate: string) {
     return {
       data: [
-        { id: '1', name: 'Jean Dupont', revenue: 25000, orders: 85, conversionRate: 68 },
-        { id: '2', name: 'Marie Martin', revenue: 22000, orders: 72, conversionRate: 71 },
-        { id: '3', name: 'Pierre Durand', revenue: 18000, orders: 65, conversionRate: 62 }
+        { 
+          nom: 'Jean Dupont', 
+          role: 'Commercial Senior', 
+          totalOffres: 85, 
+          offresApprouvees: 58, 
+          offresEnAttente: 15, 
+          offresRejetees: 12, 
+          offresPrioritaires: 8, 
+          tauxReussite: 68 
+        },
+        { 
+          nom: 'Marie Martin', 
+          role: 'Commercial', 
+          totalOffres: 72, 
+          offresApprouvees: 51, 
+          offresEnAttente: 12, 
+          offresRejetees: 9, 
+          offresPrioritaires: 6, 
+          tauxReussite: 71 
+        },
+        { 
+          nom: 'Pierre Durand', 
+          role: 'Commercial Junior', 
+          totalOffres: 65, 
+          offresApprouvees: 40, 
+          offresEnAttente: 18, 
+          offresRejetees: 7, 
+          offresPrioritaires: 4, 
+          tauxReussite: 62 
+        }
+      ]
+    };
+  },
+
+  async getPolesDetailed(startDate: string, endDate: string) {
+    return {
+      success: true,
+      data: [
+        {
+          nom: "Pôle Informatique",
+          offresLeadAttribuees: 45,
+          offresAssocieAttribuees: 35,
+          offresLeadMontees: 40,
+          offresAssocieMontees: 30,
+          tauxSucces: 75,
+          tauxPerte: 20,
+          tauxAttente: 5,
+          totalOffres: 80,
+          offresGagnees: 60,
+          offresPerdues: 16,
+          offresEnCours: 4
+        },
+        {
+          nom: "Pôle Commercial",
+          offresLeadAttribuees: 30,
+          offresAssocieAttribuees: 25,
+          offresLeadMontees: 28,
+          offresAssocieMontees: 22,
+          tauxSucces: 70,
+          tauxPerte: 25,
+          tauxAttente: 5,
+          totalOffres: 55,
+          offresGagnees: 38,
+          offresPerdues: 14,
+          offresEnCours: 3
+        },
+        {
+          nom: "Pôle Marketing",
+          offresLeadAttribuees: 35,
+          offresAssocieAttribuees: 30,
+          offresLeadMontees: 32,
+          offresAssocieMontees: 28,
+          tauxSucces: 80,
+          tauxPerte: 15,
+          tauxAttente: 5,
+          totalOffres: 65,
+          offresGagnees: 52,
+          offresPerdues: 10,
+          offresEnCours: 3
+        }
       ]
     };
   }

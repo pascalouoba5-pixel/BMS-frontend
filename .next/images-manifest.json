@@ -21,10 +21,13 @@
       256,
       384
     ],
-    "path": "/_next/image/",
+    "path": "/_next/image",
     "loader": "default",
     "loaderFile": "",
-    "domains": [],
+    "domains": [
+      "static.readdy.ai",
+      "localhost"
+    ],
     "disableStaticImages": false,
     "minimumCacheTTL": 60,
     "formats": [
@@ -33,8 +36,27 @@
     "dangerouslyAllowSVG": false,
     "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;",
     "contentDispositionType": "attachment",
-    "remotePatterns": [],
-    "unoptimized": true,
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "^(?:^(?:static\\.readdy\\.ai)$)$",
+        "port": "",
+        "pathname": "^(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?))$"
+      },
+      {
+        "protocol": "http",
+        "hostname": "^(?:^(?:localhost)$)$",
+        "port": "3000",
+        "pathname": "^(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?))$"
+      },
+      {
+        "protocol": "https",
+        "hostname": "^(?:^(?:bms\\-backend\\-9k8n\\.onrender\\.com)$)$",
+        "port": "",
+        "pathname": "^(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?))$"
+      }
+    ],
+    "unoptimized": false,
     "sizes": [
       640,
       750,
