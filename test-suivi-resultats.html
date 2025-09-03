@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Suivi des Résultats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de la Page Suivi des Résultats</h1>
+        
+        <div class="test-section info">
+            <h3>📋 Instructions de Test</h3>
+            <p>Cette page vous aide à tester la fonctionnalité de suivi des résultats.</p>
+            <ol>
+                <li>Cliquez sur "Charger les données de test" pour initialiser les données</li>
+                <li>Allez sur <a href="http://localhost:3000/suivi-resultats" target="_blank">http://localhost:3000/suivi-resultats</a></li>
+                <li>Vérifiez que les statistiques et le tableau s'affichent correctement</li>
+                <li>Testez les fonctionnalités de filtrage et d'édition</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Actions de Test</h3>
+            <button onclick="loadTestData()">Charger les données de test</button>
+            <button onclick="checkData()">Vérifier les données</button>
+            <button onclick="clearData()">Effacer les données</button>
+        </div>
+
+        <div id="results" class="test-section">
+            <h3>📊 Résultats du Test</h3>
+            <div id="stats-display"></div>
+        </div>
+
+        <div class="test-section info">
+            <h3>✅ Fonctionnalités à Tester</h3>
+            <ul>
+                <li><strong>Statistiques par pôle :</strong> Vérifiez que les cartes de statistiques s'affichent pour chaque pôle</li>
+                <li><strong>Filtrage :</strong> Testez le filtre par pôle et la recherche</li>
+                <li><strong>Vue tableau/cartes :</strong> Basculez entre les deux modes d'affichage</li>
+                <li><strong>Édition :</strong> Cliquez sur "Modifier" pour éditer une offre</li>
+                <li><strong>Données :</strong> Vérifiez que les dates, résultats et commentaires s'affichent</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Données de test
+        const testOffres = [
+            {
+                id: 1,
+                intituleOffre: "Développement Application E-commerce",
+                bailleur: "TechCorp Solutions",
+                pays: ["France", "Belgique"],
+                typeOffre: "AO",
+                dateDepot: "2024-02-15",
+                statut: "approuvée",
+                montant: "75000",
+                devise: "EUR",
+                poleLead: "Pôle santé",
+                poleAssocies: "Pôle Wash",
+                statutOffre: "Gagnée",
+                offreDeposee: true,
+                dateDepotPrevu: "2024-02-10",
+                dateDepotEffective: "2024-02-12",
+                resultatOffre: "Gagnée",
+                commentaireResultat: "Offre gagnée grâce à une proposition technique solide et un prix compétitif",
+                note: "Excellent travail d'équipe, proposition très bien structurée"
+            },
+            {
+                id: 2,
+                intituleOffre: "Audit Sécurité Infrastructure",
+                bailleur: "SecureBank",
+                pays: ["France"],
+                typeOffre: "AMI",
+                dateDepot: "2024-02-20",
+                statut: "approuvée",
+                montant: "45000",
+                devise: "EUR",
+                poleLead: "Pôle Education",
+                poleAssocies: "Pôle Climat",
+                statutOffre: "Perdue",
+                offreDeposee: true,
+                dateDepotPrevu: "2024-02-18",
+                dateDepotEffective: "2024-02-19",
+                resultatOffre: "Perdue",
+                commentaireResultat: "Concurrent plus expérimenté dans le domaine bancaire",
+                note: "À améliorer : expertise sectorielle"
+            },
+            {
+                id: 3,
+                intituleOffre: "Campagne Marketing Digital",
+                bailleur: "Fashion Trends",
+                pays: ["France", "Espagne", "Italie"],
+                typeOffre: "Avis Général",
+                dateDepot: "2024-01-30",
+                statut: "approuvée",
+                montant: "30000",
+                devise: "EUR",
+                poleLead: "Pôle Enquêtes",
+                poleAssocies: "Pôle Modélisation",
+                statutOffre: "En cours",
+                offreDeposee: false,
+                dateDepotPrevu: "2024-02-05",
+                dateDepotEffective: "",
+                resultatOffre: "En cours",
+                commentaireResultat: "En attente de la décision du client",
+                note: "Proposition bien reçue par le client"
+            }
+        ];
+
+        function loadTestData() {
+            localStorage.setItem('offres', JSON.stringify(testOffres));
+            localStorage.setItem('token', 'test-token');
+            localStorage.setItem('user', JSON.stringify({
+                id: '1',
+                email: 'test@test.com',
+                nom: 'Test',
+                prenom: 'Utilisateur',
+                role: 's_admin'
+            }));
+            
+            showMessage('✅ Données de test chargées avec succès !', 'success');
+            checkData();
+        }
+
+        function checkData() {
+            const offres = JSON.parse(localStorage.getItem('offres') || '[]');
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            let message = '';
+            let type = 'success';
+            
+            if (offres.length === 0) {
+                message = '❌ Aucune donnée trouvée. Chargez les données de test.';
+                type = 'error';
+            } else {
+                message = `✅ ${offres.length} offres trouvées dans localStorage`;
+            }
+            
+            if (!token) {
+                message += '<br>⚠️ Token d\'authentification manquant';
+                type = 'error';
+            }
+            
+            if (!user.role) {
+                message += '<br>⚠️ Données utilisateur manquantes';
+                type = 'error';
+            }
+            
+            showMessage(message, type);
+            displayStats(offres);
+        }
+
+        function clearData() {
+            localStorage.removeItem('offres');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            showMessage('🗑️ Données effacées', 'info');
+            document.getElementById('stats-display').innerHTML = '';
+        }
+
+        function showMessage(message, type) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.className = `test-section ${type}`;
+            resultsDiv.innerHTML = `
+                <h3>📊 Résultats du Test</h3>
+                <div>${message}</div>
+                <div id="stats-display"></div>
+            `;
+        }
+
+        function displayStats(offres) {
+            const statsDisplay = document.getElementById('stats-display');
+            
+            if (offres.length === 0) return;
+            
+            const stats = {
+                total: offres.length,
+                gagnees: offres.filter(o => o.resultatOffre === 'Gagnée').length,
+                perdues: offres.filter(o => o.resultatOffre === 'Perdue').length,
+                enCours: offres.filter(o => o.resultatOffre === 'En cours').length,
+                deposees: offres.filter(o => o.offreDeposee).length
+            };
+            
+            statsDisplay.innerHTML = `
+                <h4>📈 Statistiques des Données de Test</h4>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.total}</div>
+                        <div>Total Offres</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.gagnees}</div>
+                        <div>Gagnées</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.perdues}</div>
+                        <div>Perdues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.enCours}</div>
+                        <div>En Cours</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.deposees}</div>
+                        <div>Déposées</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Vérifier les données au chargement
+        window.onload = function() {
+            checkData();
+        };
+    </script>
+</body>
+</html>

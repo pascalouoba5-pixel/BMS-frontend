@@ -1,5 +1,5 @@
 import { logger, logInfo, logError, logWarn } from '../utils/logger';
-import { API_CONFIG, getApiUrl } from '../config/api';
+import { API_CONFIG, getApiUrl, checkApiHealth } from '../config/api';
 
 // Configuration de l'API
 const API_BASE_URL = API_CONFIG.BASE_URL;
@@ -7,6 +7,7 @@ const API_BASE_URL = API_CONFIG.BASE_URL;
 // Log de la configuration de l'API
 logInfo(`Configuration: NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL || 'NON_DEFINI'}`, 'API');
 logInfo(`URL de base utilisée: ${API_BASE_URL}`, 'API');
+logInfo(`Environnement: ${API_CONFIG.NODE_ENV}`, 'API');
 
 // Fonction utilitaire pour les appels API
 export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
@@ -25,16 +26,27 @@ export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
   
   const defaultOptions: RequestInit = {
     headers: {
-      'Content-Type': 'application/json',
+      ...API_CONFIG.DEFAULT_HEADERS,
       ...(token && { 'Authorization': `Bearer ${token}` }),
       ...options.headers,
     },
+    mode: API_CONFIG.CORS_MODE,
     ...options,
   };
 
   try {
     logInfo(`Envoi de la requête vers: ${url}`, 'API');
-    const response = await fetch(url, defaultOptions);
+    
+    // Timeout pour la requête
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.REQUEST_TIMEOUT);
+    
+    const response = await fetch(url, {
+      ...defaultOptions,
+      signal: controller.signal,
+    });
+    
+    clearTimeout(timeoutId);
     
     // Log de la réponse
     logInfo(`Réponse reçue: ${response.status} ${response.statusText}`, 'API');
@@ -99,24 +111,22 @@ export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     // Log détaillé de l'erreur
     logger.apiError(endpoint, error instanceof Error ? error : new Error(String(error)), undefined, {
       url: url,
-      timestamp: new Date().toISOString()
+      options: defaultOptions,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
     });
     
-    // Si c'est une erreur de token invalide, ne pas la relancer
-    if ((error instanceof Error ? error.message : String(error)) === 'Token invalide - Redirection vers la connexion') {
-      throw error;
+    // Gestion des erreurs de timeout
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Timeout de la requête après ${API_CONFIG.REQUEST_TIMEOUT}ms`);
     }
     
-    // Pour les autres erreurs, relancer avec plus de contexte
-    let enhancedMessage = `Erreur lors de la récupération des données: ${error instanceof Error ? error.message : String(error)}`;
+    // Gestion des erreurs de réseau
+    if (error instanceof Error && error.message.includes('Failed to fetch')) {
+      throw new Error('Erreur de connexion au serveur - Vérifiez votre connexion internet');
+    }
     
-    // Messages d'erreur spécifiques pour le suivi de performance
-      if (endpoint.includes('/performance/')) {
-        enhancedMessage = 'Impossible de charger les données de performance. Vérifiez votre connexion et réessayez.';
-      }
-    
-    logError(`Message d'erreur amélioré: ${enhancedMessage}`, error instanceof Error ? error : new Error(String(error)), 'API');
-    throw new Error(enhancedMessage);
+    throw error;
   }
 };
 

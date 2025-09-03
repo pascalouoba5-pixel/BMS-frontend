@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authAPI } from '../../services/api';
 import HomeButton from '../../components/HomeButton';
 import { useAuth } from '../../hooks/useAuth';
+import { checkApiHealth } from '../../config/api';
 import './login.css';
 
 export default function Login() {
@@ -16,8 +17,26 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking');
   const router = useRouter();
   const { login } = useAuth();
+
+  // Vérifier le statut de l'API au chargement
+  useEffect(() => {
+    const checkApi = async () => {
+      try {
+        console.log('🔍 [Login] Vérification du statut de l\'API...');
+        const isHealthy = await checkApiHealth();
+        setApiStatus(isHealthy ? 'online' : 'offline');
+        console.log('📊 [Login] Statut API:', isHealthy ? 'ONLINE' : 'OFFLINE');
+      } catch (error) {
+        console.error('❌ [Login] Erreur lors de la vérification de l\'API:', error);
+        setApiStatus('offline');
+      }
+    };
+
+    checkApi();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -38,8 +57,14 @@ export default function Login() {
 
     console.log('🔐 [Login] Tentative de connexion...');
     console.log(`📧 [Login] Email: ${formData.email}`);
+    console.log(`🌐 [Login] API URL: ${process.env.NEXT_PUBLIC_API_URL || 'Configuration par défaut'}`);
 
     try {
+      // Vérifier le statut de l'API avant la connexion
+      if (apiStatus === 'offline') {
+        throw new Error('L\'API backend n\'est pas accessible. Vérifiez votre connexion internet.');
+      }
+
       // Appel à l'API de connexion
       console.log('📡 [Login] Appel API de connexion...');
       const response = await authAPI.login({
@@ -48,10 +73,16 @@ export default function Login() {
       });
 
       console.log('✅ [Login] Réponse API reçue:', {
+        success: response.success,
+        message: response.message,
         user: response.user?.email,
         role: response.user?.role,
         hasToken: !!response.token
       });
+
+      if (!response.success) {
+        throw new Error(response.message || 'Erreur lors de la connexion');
+      }
 
       if (!response.token) {
         throw new Error('Aucun token reçu de l\'API');
@@ -74,10 +105,14 @@ export default function Login() {
       if (err.message) {
         if (err.message.includes('Token invalide')) {
           errorMessage = 'Erreur d\'authentification - Veuillez vous reconnecter';
-        } else if (err.message.includes('401')) {
+        } else if (err.message.includes('401') || err.message.includes('Email ou mot de passe incorrect')) {
           errorMessage = 'Email ou mot de passe incorrect';
-        } else if (err.message.includes('NetworkError')) {
-          errorMessage = 'Erreur de connexion au serveur';
+        } else if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
+          errorMessage = 'Erreur de connexion au serveur - Vérifiez votre connexion internet';
+        } else if (err.message.includes('Timeout')) {
+          errorMessage = 'Délai d\'attente dépassé - Le serveur met trop de temps à répondre';
+        } else if (err.message.includes('API backend n\'est pas accessible')) {
+          errorMessage = 'Serveur temporairement indisponible - Réessayez dans quelques minutes';
         } else {
           errorMessage = err.message;
         }
@@ -106,11 +141,31 @@ export default function Login() {
             />
             <h2 className="text-2xl font-bold text-gray-800">Connexion BMS</h2>
             <p className="text-gray-600 mt-2">Accédez à votre espace de gestion</p>
+            
+            {/* Indicateur de statut de l'API */}
+            <div className="mt-4 flex items-center justify-center space-x-2">
+              <div className={`w-3 h-3 rounded-full ${
+                apiStatus === 'checking' ? 'bg-yellow-400' :
+                apiStatus === 'online' ? 'bg-green-400' : 'bg-red-400'
+              }`}></div>
+              <span className={`text-sm ${
+                apiStatus === 'checking' ? 'text-yellow-600' :
+                apiStatus === 'online' ? 'text-green-600' : 'text-red-600'
+              }`}>
+                {apiStatus === 'checking' ? 'Vérification de l\'API...' :
+                 apiStatus === 'online' ? 'API connectée' : 'API déconnectée'}
+              </span>
+            </div>
           </div>
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-              {error}
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                {error}
+              </div>
             </div>
           )}
 
@@ -122,6 +177,7 @@ export default function Login() {
               onChange={handleChange}
               required 
               className="w-full"
+              placeholder="votre@email.com"
             />
             <label>Email</label>
           </div>
@@ -134,6 +190,7 @@ export default function Login() {
               onChange={handleChange}
               required 
               className="w-full pr-12"
+              placeholder="••••••••"
             />
             <label>Mot de passe</label>
             <button
@@ -164,7 +221,7 @@ export default function Login() {
           <button 
             type="submit" 
             className={`btn w-full ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
-            disabled={isLoading}
+            disabled={isLoading || apiStatus === 'offline'}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -187,12 +244,22 @@ export default function Login() {
           <div className="mt-8 p-4 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600 mb-2">Comptes de test :</p>
             <div className="text-xs text-gray-500 space-y-1">
-              <p><strong>Admin:</strong> test@bms.com / test123</p>
-              <p><strong>Integration:</strong> integration@bms.com / integration123</p>
+              <p><strong>Admin:</strong> test@bms.com / password123</p>
+              <p><strong>Note:</strong> Utilisez le compte de test pour vous connecter</p>
             </div>
           </div>
+
+          {/* Informations de débogage */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-xs text-blue-600">
+                <strong>Debug:</strong> API URL = {process.env.NEXT_PUBLIC_API_URL || 'Non définie'}
+              </p>
+            </div>
+          )}
         </form>
       </div>
     </div>
   );
+} 
 } 

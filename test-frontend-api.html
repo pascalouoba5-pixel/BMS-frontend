@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Frontend</title>
+</head>
+<body>
+    <h1>Test de connexion à l'API</h1>
+    <button onclick="testHealth()">Test Health Check</button>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        
+        function log(message) {
+            const results = document.getElementById('results');
+            results.innerHTML += '<p>' + message + '</p>';
+        }
+
+        async function testHealth() {
+            try {
+                log('🔍 Test du health check...');
+                const response = await fetch(`${API_BASE_URL}/api/health`);
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Health check réussi: ' + JSON.stringify(data));
+                } else {
+                    log('❌ Health check échoué: ' + response.status);
+                }
+            } catch (error) {
+                log('❌ Erreur health check: ' + error.message);
+            }
+        }
+
+        async function testLogin() {
+            try {
+                log('🔍 Test du login...');
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'superadmin@bms.com',
+                        password: 'admin1234'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Login réussi: ' + JSON.stringify(data));
+                } else {
+                    const errorData = await response.json();
+                    log('❌ Login échoué: ' + response.status + ' - ' + JSON.stringify(errorData));
+                }
+            } catch (error) {
+                log('❌ Erreur login: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

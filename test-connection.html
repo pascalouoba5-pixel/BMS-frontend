@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Connexion BMS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .loading {
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test de Connexion BMS</h1>
+        <p>Ce test vérifie la connectivité entre le frontend et le backend.</p>
+        
+        <div class="test-section">
+            <h3>1. Test de Connexion Backend</h3>
+            <button onclick="testBackendHealth()">Tester la santé du backend</button>
+            <div id="backend-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. Test d'Authentification</h3>
+            <button onclick="testLogin()">Tester la connexion</button>
+            <div id="login-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. Test de Recherche Automatique</h3>
+            <button onclick="testSearchAPI()">Tester l'API de recherche</button>
+            <div id="search-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. Test Complet</h3>
+            <button onclick="runAllTests()">Lancer tous les tests</button>
+            <div id="all-tests-result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        
+        function showResult(elementId, message, type = 'success') {
+            const element = document.getElementById(elementId);
+            element.className = `test-section ${type}`;
+            element.innerHTML = `<strong>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳'} ${message}</strong>`;
+        }
+        
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.className = 'test-section loading';
+            element.innerHTML = '<strong>⏳ Test en cours...</strong>';
+        }
+        
+        async function testBackendHealth() {
+            showLoading('backend-result');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('backend-result', `Backend opérationnel - ${data.message}`, 'success');
+                } else {
+                    showResult('backend-result', `Erreur backend: ${data.error || response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('backend-result', `Erreur de connexion: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testLogin() {
+            showLoading('login-result');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'superadmin@bms.com',
+                        password: 'admin1234'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('login-result', `Connexion réussie - Token reçu`, 'success');
+                } else {
+                    showResult('login-result', `Erreur de connexion: ${data.error || response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('login-result', `Erreur de connexion: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testSearchAPI() {
+            showLoading('search-result');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/results`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('search-result', `API de recherche accessible - ${data.results?.length || 0} résultats`, 'success');
+                } else {
+                    showResult('search-result', `Erreur API recherche: ${data.error || response.status}`, 'error');
+                }
+            } catch (error) {
+                showResult('search-result', `Erreur de connexion: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runAllTests() {
+            showLoading('all-tests-result');
+            
+            const results = [];
+            
+            // Test 1: Backend Health
+            try {
+                const healthResponse = await fetch(`${API_BASE_URL}/api/health`);
+                if (healthResponse.ok) {
+                    results.push('✅ Backend Health: OK');
+                } else {
+                    results.push('❌ Backend Health: ÉCHEC');
+                }
+            } catch (error) {
+                results.push('❌ Backend Health: ERREUR');
+            }
+            
+            // Test 2: Login
+            try {
+                const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'superadmin@bms.com',
+                        password: 'admin1234'
+                    })
+                });
+                if (loginResponse.ok) {
+                    results.push('✅ Login: OK');
+                } else {
+                    results.push('❌ Login: ÉCHEC');
+                }
+            } catch (error) {
+                results.push('❌ Login: ERREUR');
+            }
+            
+            // Test 3: Search API
+            try {
+                const searchResponse = await fetch(`${API_BASE_URL}/api/results`);
+                if (searchResponse.ok) {
+                    results.push('✅ Search API: OK');
+                } else {
+                    results.push('❌ Search API: ÉCHEC');
+                }
+            } catch (error) {
+                results.push('❌ Search API: ERREUR');
+            }
+            
+            const element = document.getElementById('all-tests-result');
+            element.className = 'test-section';
+            element.innerHTML = `
+                <strong>📊 Résultats des Tests:</strong><br>
+                ${results.join('<br>')}
+            `;
+        }
+        
+        // Auto-test au chargement
+        window.onload = function() {
+            setTimeout(testBackendHealth, 1000);
+        };
+    </script>
+</body>
+</html>

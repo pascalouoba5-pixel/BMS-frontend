@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Paramètres Alertes BMS</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; color: #856404; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background-color: #0056b3; }
+        .param-display { background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .alert-demo { background: linear-gradient(to right, #ff8c00, #dc3545); color: white; padding: 15px; border-radius: 8px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test Paramètres d'Alertes</h1>
+        
+        <div class="test-section info">
+            <h3>Fonctionnalités Testées</h3>
+            <ul>
+                <li>Initialisation des paramètres par défaut (UTC+0)</li>
+                <li>Sauvegarde et chargement des paramètres</li>
+                <li>Modification des délais d'alerte</li>
+                <li>Changement de fuseau horaire</li>
+                <li>Réinitialisation des paramètres</li>
+                <li>Génération d'alertes avec nouveaux paramètres</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>Actions de Test</h3>
+            <button onclick="loadTestData()">Charger données de test</button>
+            <button onclick="checkCurrentSettings()">Vérifier paramètres actuels</button>
+            <button onclick="testSettingsChange()">Tester changement de paramètres</button>
+            <button onclick="resetSettings()">Réinitialiser paramètres</button>
+            <button onclick="clearAllData()">Effacer toutes les données</button>
+        </div>
+
+        <div class="test-section">
+            <h3>Paramètres Actuels</h3>
+            <div id="current-settings" class="param-display">
+                Chargement...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test de Changement de Paramètres</h3>
+            <div>
+                <label>Alerte montage administratif (heures):</label>
+                <input type="number" id="montage-hours" value="48" min="1" max="168" style="margin: 0 10px;">
+                <button onclick="updateMontageHours()">Mettre à jour</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Alerte dépôt (heures):</label>
+                <input type="number" id="depot-hours" value="12" min="1" max="168" style="margin: 0 10px;">
+                <button onclick="updateDepotHours()">Mettre à jour</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Fuseau horaire:</label>
+                <select id="timezone-select" style="margin: 0 10px;">
+                    <option value="UTC">UTC (UTC+0)</option>
+                    <option value="Europe/Paris">Europe/Paris (UTC+1/+2)</option>
+                    <option value="America/New_York">America/New_York (UTC-5/-4)</option>
+                </select>
+                <button onclick="updateTimezone()">Mettre à jour</button>
+            </div>
+        </div>
+
+        <div id="results" class="test-section">
+            <h3>Résultats</h3>
+            <div id="test-results"></div>
+        </div>
+    </div>
+
+    <script>
+        function loadTestData() {
+            const testOffres = [
+                {
+                    id: 1,
+                    intituleOffre: "Test - Montage dans 48h",
+                    delaiTransmissionMontageAdministratif: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString().split('T')[0]
+                },
+                {
+                    id: 2,
+                    intituleOffre: "Test - Dépôt dans 12h",
+                    dateDepotPrevu: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString().split('T')[0]
+                },
+                {
+                    id: 3,
+                    intituleOffre: "Test - Montage dans 2h",
+                    delaiTransmissionMontageAdministratif: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().split('T')[0]
+                }
+            ];
+            
+            localStorage.setItem('offres', JSON.stringify(testOffres));
+            document.getElementById('test-results').innerHTML = '✅ Données de test chargées avec des échéances dans 48h, 12h et 2h.';
+            checkCurrentSettings();
+        }
+
+        function checkCurrentSettings() {
+            const savedSettings = localStorage.getItem('alertSettings');
+            let settings;
+            
+            if (savedSettings) {
+                try {
+                    settings = JSON.parse(savedSettings);
+                } catch (error) {
+                    settings = { montageAlertHours: 72, depotAlertHours: 24, timezone: 'UTC' };
+                }
+            } else {
+                settings = { montageAlertHours: 72, depotAlertHours: 24, timezone: 'UTC' };
+            }
+            
+            const display = document.getElementById('current-settings');
+            display.innerHTML = `
+                <strong>Paramètres actuels :</strong><br>
+                • Alerte montage administratif : ${settings.montageAlertHours}h<br>
+                • Alerte dépôt : ${settings.depotAlertHours}h<br>
+                • Fuseau horaire : ${settings.timezone}<br>
+                <small>Dernière mise à jour : ${new Date().toLocaleString()}</small>
+            `;
+            
+            // Mettre à jour les champs de test
+            document.getElementById('montage-hours').value = settings.montageAlertHours;
+            document.getElementById('depot-hours').value = settings.depotAlertHours;
+            document.getElementById('timezone-select').value = settings.timezone;
+        }
+
+        function updateMontageHours() {
+            const hours = parseInt(document.getElementById('montage-hours').value);
+            if (hours >= 1 && hours <= 168) {
+                const savedSettings = localStorage.getItem('alertSettings');
+                let settings = savedSettings ? JSON.parse(savedSettings) : { montageAlertHours: 72, depotAlertHours: 24, timezone: 'UTC' };
+                settings.montageAlertHours = hours;
+                localStorage.setItem('alertSettings', JSON.stringify(settings));
+                
+                // Déclencher l'événement de changement
+                window.dispatchEvent(new CustomEvent('alertSettingsChanged'));
+                
+                document.getElementById('test-results').innerHTML = `✅ Alerte montage administratif mise à jour : ${hours}h`;
+                checkCurrentSettings();
+            } else {
+                document.getElementById('test-results').innerHTML = '❌ Valeur invalide. Utilisez un nombre entre 1 et 168.';
+            }
+        }
+
+        function updateDepotHours() {
+            const hours = parseInt(document.getElementById('depot-hours').value);
+            if (hours >= 1 && hours <= 168) {
+                const savedSettings = localStorage.getItem('alertSettings');
+                let settings = savedSettings ? JSON.parse(savedSettings) : { montageAlertHours: 72, depotAlertHours: 24, timezone: 'UTC' };
+                settings.depotAlertHours = hours;
+                localStorage.setItem('alertSettings', JSON.stringify(settings));
+                
+                // Déclencher l'événement de changement
+                window.dispatchEvent(new CustomEvent('alertSettingsChanged'));
+                
+                document.getElementById('test-results').innerHTML = `✅ Alerte dépôt mise à jour : ${hours}h`;
+                checkCurrentSettings();
+            } else {
+                document.getElementById('test-results').innerHTML = '❌ Valeur invalide. Utilisez un nombre entre 1 et 168.';
+            }
+        }
+
+        function updateTimezone() {
+            const timezone = document.getElementById('timezone-select').value;
+            const savedSettings = localStorage.getItem('alertSettings');
+            let settings = savedSettings ? JSON.parse(savedSettings) : { montageAlertHours: 72, depotAlertHours: 24, timezone: 'UTC' };
+            settings.timezone = timezone;
+            localStorage.setItem('alertSettings', JSON.stringify(settings));
+            
+            // Déclencher l'événement de changement
+            window.dispatchEvent(new CustomEvent('alertSettingsChanged'));
+            
+            document.getElementById('test-results').innerHTML = `✅ Fuseau horaire mis à jour : ${timezone}`;
+            checkCurrentSettings();
+        }
+
+        function resetSettings() {
+            const defaultSettings = {
+                montageAlertHours: 72,
+                depotAlertHours: 24,
+                timezone: 'UTC'
+            };
+            localStorage.setItem('alertSettings', JSON.stringify(defaultSettings));
+            
+            // Déclencher l'événement de changement
+            window.dispatchEvent(new CustomEvent('alertSettingsChanged'));
+            
+            document.getElementById('test-results').innerHTML = '✅ Paramètres réinitialisés aux valeurs par défaut';
+            checkCurrentSettings();
+        }
+
+        function testSettingsChange() {
+            const savedSettings = localStorage.getItem('alertSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                document.getElementById('test-results').innerHTML = `
+                    <div class="alert-demo">
+                        <strong>Test de changement de paramètres :</strong><br>
+                        • Montage : ${settings.montageAlertHours}h<br>
+                        • Dépôt : ${settings.depotAlertHours}h<br>
+                        • Fuseau : ${settings.timezone}<br>
+                        <small>Les alertes devraient se mettre à jour automatiquement dans l'application.</small>
+                    </div>
+                `;
+            } else {
+                document.getElementById('test-results').innerHTML = '❌ Aucun paramètre trouvé. Chargez d\'abord des données de test.';
+            }
+        }
+
+        function clearAllData() {
+            localStorage.removeItem('offres');
+            localStorage.removeItem('alertSettings');
+            document.getElementById('test-results').innerHTML = '🗑️ Toutes les données ont été effacées';
+            checkCurrentSettings();
+        }
+
+        // Charger les paramètres au démarrage
+        window.onload = function() {
+            checkCurrentSettings();
+        };
+    </script>
+</body>
+</html>

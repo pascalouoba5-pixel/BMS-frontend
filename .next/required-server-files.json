@@ -99,7 +99,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS",
+    "outputFileTracingRoot": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -282,12 +282,12 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS"
+      "root": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend"
     },
     "_originalRedirects": []
   },
   "appDir": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend",
-  "relativeAppDir": "frontend",
+  "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",
@@ -310,6 +310,6 @@
     ".next\\static\\css\\5be36c970eb89460.css"
   ],
   "ignore": [
-    "..\\node_modules\\next\\dist\\compiled\\@ampproject\\toolbox-optimizer\\**\\*"
+    "node_modules\\next\\dist\\compiled\\@ampproject\\toolbox-optimizer\\**\\*"
   ]
 }

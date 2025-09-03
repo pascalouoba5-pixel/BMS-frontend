@@ -1,0 +1,63 @@
+services:
+  # Service Backend API
+  - type: web
+    name: bms-backend
+    env: node
+    plan: starter
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        fromService:
+          name: bms-frontend
+          type: web
+          property: url
+      - key: DB_HOST
+        fromDatabase:
+          name: bms-database
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: bms-database
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: bms-database
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: bms-database
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: bms-database
+          property: password
+
+  # Service Frontend Next.js
+  - type: web
+    name: bms-frontend
+    env: node
+    plan: starter
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: bms-backend
+          type: web
+          property: url
+
+databases:
+  # Base de données PostgreSQL
+  - name: bms-database
+    databaseName: bms_production
+    user: bms_user
+    plan: starter

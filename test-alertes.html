@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Alertes BMS</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .alert-demo { background: linear-gradient(to right, #ff8c00, #dc3545); color: white; padding: 15px; border-radius: 8px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Test Système d'Alertes</h1>
+        
+        <div class="test-section info">
+            <h3>Fonctionnalités</h3>
+            <ul>
+                <li>Alerte 72h avant montage administratif (orange)</li>
+                <li>Alerte 24h avant dépôt (rouge)</li>
+                <li>Alerte urgente ≤1h (rouge clignotant)</li>
+                <li>Échéance dépassée (rouge foncé clignotant)</li>
+                <li>Persistance sur toutes les pages</li>
+                <li>Mise à jour automatique chaque minute</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>Actions de Test</h3>
+            <button onclick="loadTestData()">Charger données de test</button>
+            <button onclick="clearData()">Effacer données</button>
+        </div>
+
+        <div id="results" class="test-section">
+            <h3>Résultats</h3>
+            <div id="test-results"></div>
+        </div>
+    </div>
+
+    <script>
+        function loadTestData() {
+            const testOffres = [
+                {
+                    id: 1,
+                    intituleOffre: "Test - Montage dans 2h",
+                    delaiTransmissionMontageAdministratif: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().split('T')[0]
+                },
+                {
+                    id: 2,
+                    intituleOffre: "Test - Dépôt dans 30min",
+                    dateDepotPrevu: new Date(Date.now() + 30 * 60 * 1000).toISOString().split('T')[0]
+                }
+            ];
+            
+            localStorage.setItem('offres', JSON.stringify(testOffres));
+            localStorage.setItem('token', 'test-token');
+            localStorage.setItem('user', JSON.stringify({role: 's_admin'}));
+            
+            document.getElementById('test-results').innerHTML = '✅ Données de test chargées. Allez sur <a href="http://localhost:3000" target="_blank">l\'application</a> pour voir les alertes.';
+        }
+
+        function clearData() {
+            localStorage.removeItem('offres');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            document.getElementById('test-results').innerHTML = '🗑️ Données effacées';
+        }
+    </script>
+</body>
+</html>
