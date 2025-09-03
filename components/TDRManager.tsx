@@ -30,7 +30,7 @@ export default function TDRManager({ offreId, onFichiersUpdate }: TDRManagerProp
 
   useEffect(() => {
     fetchFichiersTDR();
-  }, [offreId]);
+  }, [offreId, fetchFichiersTDR]);
 
   const fetchFichiersTDR = async () => {
     if (!token) return;

@@ -81,7 +81,7 @@ export default function PoleOffresTable({
 
   useEffect(() => {
     filterOffres();
-  }, [offres, searchTerm, selectedModalite]);
+  }, [offres, searchTerm, selectedModalite, filterOffres]);
 
   const filterOffres = () => {
     let filtered = [...offres];

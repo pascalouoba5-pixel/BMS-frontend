@@ -66,7 +66,7 @@ export default function ScheduledSearchConfig({
 
   useEffect(() => {
     loadOptions();
-  }, []);
+  }, [loadOptions]);
 
   const loadOptions = async () => {
     try {

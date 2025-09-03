@@ -44,7 +44,7 @@ const NotificationManager: React.FC<NotificationManagerProps> = ({ children }) =
         removeNotification(id);
       }, newNotification.duration);
     }
-  }, []);
+  }, [removeNotification]);
 
   const removeNotification = useCallback((id: string) => {
     setNotifications(prev => prev.filter(n => n.id !== id));

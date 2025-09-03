@@ -45,7 +45,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({ className = '' }) => {
             <div className="flex items-center space-x-2">
               <span className="text-xl">⚠️</span>
               <h3 className="font-semibold text-lg">
-                Alertes d'échéances ({alerts.length})
+                Alertes d&apos;échéances ({alerts.length})
               </h3>
             </div>
             <div className="text-sm opacity-90">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getRoleMenu, canAccessPage } from '../utils/permissions';
@@ -35,9 +36,11 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/">
-              <img 
+              <Image 
                 src="https://static.readdy.ai/image/36ce116ccdb0d05752a287dd792317ce/3a2cd734c9129790560cc32a9975e166.jfif" 
                 alt="AMD Logo" 
+                width={40}
+                height={40}
                 className="h-10 cursor-pointer"
               />
             </Link>

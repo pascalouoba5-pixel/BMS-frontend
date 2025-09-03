@@ -48,7 +48,7 @@ const AlertSettings: React.FC<AlertSettingsProps> = ({ className = '' }) => {
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
       >
         <i className="ri-settings-3-line"></i>
-        <span>Paramètres d'alertes</span>
+        <span>Paramètres d&apos;alertes</span>
       </button>
 
       {/* Modal des paramètres */}
@@ -88,7 +88,7 @@ const AlertSettings: React.FC<AlertSettingsProps> = ({ className = '' }) => {
                   <span className="text-sm text-gray-600">heures avant</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  Actuellement : {settings.montageAlertHours}h avant l'échéance
+                  Actuellement : {settings.montageAlertHours}h avant l&apos;échéance
                 </p>
               </div>
 
@@ -112,7 +112,7 @@ const AlertSettings: React.FC<AlertSettingsProps> = ({ className = '' }) => {
                   <span className="text-sm text-gray-600">heures avant</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  Actuellement : {settings.depotAlertHours}h avant l'échéance
+                  Actuellement : {settings.depotAlertHours}h avant l&apos;échéance
                 </p>
               </div>
 

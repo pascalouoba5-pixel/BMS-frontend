@@ -39,7 +39,7 @@ export default function ApiStatusChecker({ showDetails = false, className = '' }
     const interval = setInterval(checkStatus, 30000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [checkStatus]);
 
   const getStatusColor = () => {
     switch (status) {

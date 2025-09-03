@@ -43,7 +43,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({ notification, onC
       
       requestAnimationFrame(updateProgress);
     }
-  }, [notification.duration]);
+  }, [notification.duration, handleClose]);
 
   const handleClose = () => {
     setIsVisible(false);

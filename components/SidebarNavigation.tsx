@@ -40,7 +40,7 @@ export default function SidebarNavigation() {
     if (isClient) {
       checkAuth();
     }
-  }, [isClient]);
+  }, [isClient, checkAuth]);
 
   const checkAuth = () => {
     // Récupérer le rôle utilisateur depuis localStorage
@@ -64,7 +64,7 @@ export default function SidebarNavigation() {
           href: '/', 
           name: 'Accueil', 
           icon: 'ri-home-line',
-          description: 'Page d\'accueil'
+          description: 'Page d&apos;accueil'
         },
         { 
           href: '/performance', 
@@ -88,7 +88,7 @@ export default function SidebarNavigation() {
       'Offres validées': 'Offres approuvées',
       'Montage administratif': 'Gestion administrative',
       'Pôle Lead': 'Gestion des pôles',
-      'Accès Réservé': 'Fonctions d\'administration avancées',
+      'Accès Réservé': 'Fonctions d&apos;administration avancées',
       'Partenariat': 'Gestion des partenaires'
     };
     return descriptions[name] || 'Page de navigation';

@@ -43,7 +43,7 @@ export default function StatistiquesPoles({ period, startDate, endDate }: Statis
 
   useEffect(() => {
     fetchPoleStats();
-  }, [period, startDate, endDate]);
+  }, [period, startDate, endDate, fetchPoleStats]);
 
   const fetchPoleStats = async () => {
     try {

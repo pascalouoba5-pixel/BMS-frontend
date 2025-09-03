@@ -20,7 +20,7 @@ export default function RechercheStats() {
 
   useEffect(() => {
     loadStats();
-  }, []);
+  }, [loadStats]);
 
   const loadStats = async () => {
     try {

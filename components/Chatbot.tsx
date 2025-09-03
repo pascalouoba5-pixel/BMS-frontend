@@ -52,7 +52,7 @@ export default function Chatbot() {
     "Qu'est-ce que les recommandations ?"
   ];
 
-  // Fonction pour obtenir le nom de l'utilisateur avec modalité
+  // Fonction pour obtenir le nom de l&apos;utilisateur avec modalité
   const getUserDisplayName = () => {
     // Vérifier que nous sommes côté client
     if (typeof window === 'undefined') return 'Utilisateur';
@@ -74,16 +74,16 @@ export default function Chatbot() {
     return 'Utilisateur';
   };
 
-  // Messages d'accueil basés sur le rôle avec nom personnalisé
+  // Messages d&apos;accueil basés sur le rôle avec nom personnalisé
   const getWelcomeMessage = () => {
     const userName = getUserDisplayName();
     const welcomeMessages = {
-      s_admin: `Bienvenue ${userName} ! Je suis l'assistant BMS. En tant que Super Administrateur, vous avez accès à toutes les fonctionnalités. Comment puis-je vous aider ?`,
-      admin: `Bienvenue ${userName} ! Je suis l'assistant BMS. En tant qu'administrateur, vous pouvez gérer les utilisateurs et valider les offres. Comment puis-je vous aider ?`,
-      charge_ajout_offre: `Bienvenue ${userName} ! Je suis l'assistant BMS. Vous pouvez ajouter et gérer les nouvelles offres. Comment puis-je vous aider ?`,
-      cma: `Bienvenue ${userName} ! Je suis l'assistant BMS. Vous êtes chargé du montage administratif. Comment puis-je vous aider ?`,
-      cmt: `Bienvenue ${userName} ! Je suis l'assistant BMS. Vous êtes chargé du montage technique. Comment puis-je vous aider ?`,
-      default: `Bienvenue ${userName} ! Je suis l'assistant BMS. Comment puis-je vous aider avec l'utilisation de l'application ?`
+      s_admin: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. En tant que Super Administrateur, vous avez accès à toutes les fonctionnalités. Comment puis-je vous aider ?`,
+      admin: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. En tant qu&apos;administrateur, vous pouvez gérer les utilisateurs et valider les offres. Comment puis-je vous aider ?`,
+      charge_ajout_offre: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. Vous pouvez ajouter et gérer les nouvelles offres. Comment puis-je vous aider ?`,
+      cma: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. Vous êtes chargé du montage administratif. Comment puis-je vous aider ?`,
+      cmt: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. Vous êtes chargé du montage technique. Comment puis-je vous aider ?`,
+      default: `Bienvenue ${userName} ! Je suis l&apos;assistant BMS. Comment puis-je vous aider avec l&apos;utilisation de l&apos;application ?`
     };
     return welcomeMessages[userRole as keyof typeof welcomeMessages] || welcomeMessages.default;
   };
@@ -95,7 +95,7 @@ export default function Chatbot() {
       text: "BMS est un système de gestion des offres commerciales. Voici les principales fonctionnalités :",
       type: 'list',
       list: [
-        "Dashboard : Vue d'ensemble de toutes les offres",
+        "Dashboard : Vue d&apos;ensemble de toutes les offres",
         "Nouvelle offre : Ajouter une nouvelle opportunité",
         "Répartition : Assigner les offres aux pôles",
         "Offre du jour : Offres soumises aujourd'hui",
@@ -343,7 +343,7 @@ export default function Chatbot() {
       setIsTyping(false);
       setShowSuggestions(true);
     }, 1000);
-  }, []);
+  }, [findBestResponse, generateId]);
 
   // Fonction pour gérer les suggestions
   const handleSuggestionClick = (suggestion: string) => {
@@ -364,7 +364,7 @@ export default function Chatbot() {
   // Effet pour faire défiler vers le bas quand de nouveaux messages arrivent
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   // Effet pour initialiser le message de bienvenue
   useEffect(() => {
@@ -378,7 +378,7 @@ export default function Chatbot() {
       };
       setMessages([welcomeMessage]);
     }
-  }, [isClient, userRole]);
+  }, [isClient, userRole, messages.length, getWelcomeMessage, generateId]);
 
   // Gestionnaire de soumission du formulaire
   const handleSubmit = (e: React.FormEvent) => {

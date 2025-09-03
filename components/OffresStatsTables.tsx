@@ -65,7 +65,7 @@ export default function OffresStatsTables({
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };
-  }, [selectedPeriod, selectedPoleLead, customStartDate, customEndDate]);
+  }, [selectedPeriod, selectedPoleLead, customStartDate, customEndDate, calculateStats]);
 
   const calculateStats = () => {
     try {

@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AlertBanner from '../components/AlertBanner';
@@ -113,7 +114,7 @@ export default function Home() {
       const interval = setInterval(calculateStats, 30000);
       return () => clearInterval(interval);
     }
-  }, [isClient]);
+  }, [isClient, calculateStats]);
 
   // Afficher l'écran de chargement
   if (!isClient || isLoading) {
@@ -151,9 +152,11 @@ export default function Home() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <img 
+                <Image 
                   src="https://static.readdy.ai/image/36ce116ccdb0d05752a287dd792317ce/3a2cd734c9129790560cc32a9975e166.jfif" 
                   alt="BMS Logo" 
+                  width={40}
+                  height={40}
                   className="h-10 w-auto animate-float"
                 />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
@@ -375,7 +378,7 @@ export default function Home() {
                     Offre du jour
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
-                    Consulter les offres soumises aujourd'hui
+                    Consulter les offres soumises aujourd&apos;hui
                   </p>
                 </div>
               </div>
@@ -547,7 +550,7 @@ export default function Home() {
                     Recherche automatique
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
-                    Recherche intelligente et automatique d'opportunités
+                    Recherche intelligente et automatique d&apos;opportunités
                   </p>
                 </div>
               </div>
@@ -577,9 +580,9 @@ export default function Home() {
         {/* Section d'aide et support */}
         <div className="mt-16 p-8 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 rounded-2xl text-white shadow-2xl animate-fadeInUp">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">Besoin d'aide ?</h3>
+            <h3 className="text-2xl font-bold mb-4">Besoin d&apos;aide ?</h3>
             <p className="text-blue-100 dark:text-blue-200 mb-6">
-              Notre assistant intelligent est là pour vous guider dans l'utilisation de BMS
+              Notre assistant intelligent est là pour vous guider dans l&apos;utilisation de BMS
             </p>
             <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
               <button className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 backdrop-blur-sm">
