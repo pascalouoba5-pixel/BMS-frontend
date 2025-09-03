@@ -113,7 +113,7 @@
     "logging": {},
     "expireTime": 31536000,
     "staticPageGenerationTimeout": 60,
-    "output": "standalone",
+    "output": "export",
     "modularizeImports": {
       "@mui/icons-material": {
         "transform": "@mui/icons-material/{{member}}"
@@ -309,24 +309,7 @@
     },
     "turbopack": {
       "root": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend"
-    },
-    "_originalRewrites": {
-      "beforeFiles": [],
-      "afterFiles": [
-        {
-          "source": "/api/:path*",
-          "destination": "https://bms-backend-9k8n.onrender.com/api/:path*"
-        }
-      ],
-      "fallback": []
-    },
-    "_originalRedirects": [
-      {
-        "source": "/api",
-        "destination": "/api/health",
-        "permanent": false
-      }
-    ]
+    }
   },
   "appDir": "C:\\Users\\User\\Desktop\\Projet du pole Informatique\\Dossier développement\\BMS 3\\BMS_06_08_25\\BMS_06_08_25\\BMS\\frontend",
   "relativeAppDir": "",

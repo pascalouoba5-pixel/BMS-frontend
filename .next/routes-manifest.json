@@ -10,34 +10,9 @@
       "internal": true,
       "statusCode": 308,
       "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
-    },
-    {
-      "source": "/api",
-      "destination": "/api/health",
-      "statusCode": 307,
-      "regex": "^(?!/_next)/api(?:/)?$"
     }
   ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "origin-when-cross-origin"
-        }
-      ],
-      "regex": "^(?:/(.*))(?:/)?$"
-    }
-  ],
+  "headers": [],
   "dynamicRoutes": [
     {
       "page": "/repartition/pole-lead/[pole]",
@@ -199,11 +174,5 @@
     "pathHeader": "x-nextjs-rewritten-path",
     "queryHeader": "x-nextjs-rewritten-query"
   },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://bms-backend-9k8n.onrender.com/api/:path*",
-      "regex": "^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
-    }
-  ]
+  "rewrites": []
 }

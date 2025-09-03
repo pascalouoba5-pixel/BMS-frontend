@@ -29,58 +29,18 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  headers: async () => {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-        ],
-      },
-    ];
-  },
+  // Note: headers are not compatible with static export
+  // Security headers should be configured at the hosting level
 
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  redirects: async () => {
-    return [
-      {
-        source: '/api',
-        destination: '/api/health',
-        permanent: false,
-      },
-    ];
-  },
+  // Note: redirects are not compatible with static export
+  // API calls will be made directly to the backend URL
 
-  rewrites: async () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com';
-    
-    // Vérifier que l'URL est valide
-    if (!apiUrl || apiUrl === 'undefined') {
-      console.warn('⚠️ NEXT_PUBLIC_API_URL non définie, utilisation de l\'URL par défaut');
-      return [];
-    }
-
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${apiUrl}/api/:path*`,
-      },
-    ];
-  },
+  // Note: rewrites are not compatible with static export
+  // API calls will be made directly to the backend URL
 
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
@@ -106,7 +66,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
 
-  output: 'standalone',
+  output: 'export',
 
   publicRuntimeConfig: {
     apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://bms-backend-9k8n.onrender.com',

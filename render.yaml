@@ -42,10 +42,10 @@ services:
   # Service Frontend Next.js
   - type: web
     name: bms-frontend
-    env: node
+    env: static
     plan: starter
     buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm start
+    staticPublishPath: ./frontend/out
     envVars:
       - key: NODE_ENV
         value: production
